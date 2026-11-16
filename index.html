@@ -1,0 +1,3732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Фрайсбук (Fraisebook) — Réseau Social RP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    /* ==========================================================================
+       ESTHÉTIQUE NOSTALGIQUE FACEBOOK 2009–2012 (ФРАЙСБУК / FRAISEBOOK)
+       ========================================================================== */
+    :root {
+      --fb-blue: #3b5998;
+      --fb-blue-dark: #29447e;
+      --fb-blue-light: #627aad;
+      --fb-blue-hover: #4c69ba;
+      --fb-bg: #e9ebee;
+      --fb-card: #ffffff;
+      --fb-border: #d8dfea;
+      --fb-border-dark: #bdc7d8;
+      --fb-text: #333333;
+      --fb-muted: #777777;
+      --fb-link: #3b5998;
+      --fb-accent-bg: #edeff4;
+    }
+
+    body.theme-classic-2010 {
+      --fb-blue: #3b5998;
+      --fb-blue-dark: #29447e;
+      --fb-blue-light: #627aad;
+      --fb-bg: #e9ebee;
+    }
+    body.theme-royal-2009 {
+      --fb-blue: #2f477a;
+      --fb-blue-dark: #1d2f56;
+      --fb-blue-light: #526da3;
+      --fb-bg: #dfe3ee;
+    }
+    body.theme-fraise-retro {
+      --fb-blue: #8e244d;
+      --fb-blue-dark: #631533;
+      --fb-blue-light: #b84a75;
+      --fb-bg: #f3eaee;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.45;
+      background-color: var(--fb-bg);
+      color: var(--fb-text);
+      overflow-x: hidden;
+    }
+
+    /* Barre bleue supérieure fixe style 2010 */
+    .fb-topbar {
+      background: linear-gradient(to bottom, var(--fb-blue-light) 0%, var(--fb-blue) 15%, var(--fb-blue) 100%);
+      border-bottom: 1px solid var(--fb-blue-dark);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+      height: 42px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .fb-logo-text {
+      font-family: "Tahoma", "Trebuchet MS", sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
+    }
+
+    .fb-icon-btn {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      color: #1d2a5b;
+      transition: background 0.12s, color 0.12s;
+      cursor: pointer;
+    }
+    .fb-icon-btn:hover, .fb-icon-btn.active {
+      background-color: var(--fb-blue-dark);
+      color: #ffffff;
+    }
+    .fb-badge-count {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      background: #f03d25;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 0 4px;
+      border-radius: 2px;
+      border: 1px solid #d83722;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+      line-height: 13px;
+    }
+
+    /* Boutons classiques Facebook 2010 avec léger dégradé et bordure franche */
+    .fb-btn-primary {
+      background: linear-gradient(to bottom, #637bad 0%, #5972a7 100%);
+      border: 1px solid #29447e;
+      border-bottom-color: #1a356e;
+      box-shadow: inset 0 1px 0 #8a9cc2;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+    }
+    .fb-btn-primary:hover {
+      background: linear-gradient(to bottom, #5972a7 0%, #4f6aa3 100%);
+    }
+    .fb-btn-primary:active {
+      background: #4f6aa3;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .fb-btn-secondary {
+      background: linear-gradient(to bottom, #f5f6f6 0%, #e4e4e4 100%);
+      border: 1px solid #999999;
+      border-bottom-color: #888888;
+      box-shadow: inset 0 1px 0 #ffffff;
+      color: #333333;
+      font-weight: bold;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .fb-btn-secondary:hover {
+      background: linear-gradient(to bottom, #eeeeee 0%, #dcdcdc 100%);
+    }
+
+    .fb-btn-green {
+      background: linear-gradient(to bottom, #75ae5c 0%, #67a54b 100%);
+      border: 1px solid #3b6e22;
+      border-bottom-color: #2c5115;
+      box-shadow: inset 0 1px 0 #98c286;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .fb-btn-green:hover {
+      background: linear-gradient(to bottom, #67a54b 0%, #5b9341 100%);
+    }
+
+    .fb-btn-danger {
+      background: linear-gradient(to bottom, #e05252 0%, #c93b3b 100%);
+      border: 1px solid #8a1f1f;
+      box-shadow: inset 0 1px 0 #f28b8b;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Cartes et encadrés style 2009-2012 */
+    .fb-card {
+      background: var(--fb-card);
+      border: 1px solid var(--fb-border);
+      border-radius: 3px;
+    }
+    .fb-box-header {
+      background: #f2f4f8;
+      border-bottom: 1px solid var(--fb-border);
+      padding: 6px 10px;
+      font-weight: bold;
+      color: #333333;
+      font-size: 11px;
+    }
+
+    .fb-link {
+      color: var(--fb-link);
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .fb-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Menu latéral gauche */
+    .fb-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 8px;
+      border-radius: 2px;
+      color: #333333;
+      cursor: pointer;
+      font-size: 12px;
+      margin-bottom: 1px;
+    }
+    .fb-nav-item:hover {
+      background-color: #d8dfea;
+    }
+    .fb-nav-item.active {
+      background-color: #d8dfea;
+      font-weight: bold;
+      color: #1d2a5b;
+    }
+
+    /* Champs de saisie */
+    .fb-input, .fb-textarea, .fb-select {
+      border: 1px solid var(--fb-border-dark);
+      border-radius: 2px;
+      padding: 5px 7px;
+      font-size: 12px;
+      font-family: inherit;
+      background: #ffffff;
+      color: #333333;
+      width: 100%;
+    }
+    .fb-input:focus, .fb-textarea:focus, .fb-select:focus {
+      outline: none;
+      border-color: var(--fb-blue);
+    }
+
+    /* Onglets de sous-navigation */
+    .fb-subtab {
+      padding: 6px 12px;
+      border: 1px solid transparent;
+      border-bottom: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 11px;
+      color: var(--fb-link);
+      border-radius: 3px 3px 0 0;
+    }
+    .fb-subtab:hover {
+      background: #f2f4f8;
+    }
+    .fb-subtab.active {
+      background: #ffffff;
+      border-color: var(--fb-border);
+      color: #333333;
+      margin-bottom: -1px;
+    }
+
+    /* Dropdown menus dans la barre supérieure */
+    .fb-dropdown {
+      position: absolute;
+      top: 38px;
+      width: 320px;
+      max-width: 92vw;
+      background: #ffffff;
+      border: 1px solid #333333;
+      border-top: none;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+      z-index: 1200;
+      border-radius: 0 0 3px 3px;
+    }
+
+    /* Timeline Cover Style 2011-2012 */
+    .fb-cover-container {
+      position: relative;
+      height: 210px;
+      background-color: #c4cde0;
+      background-size: cover;
+      background-position: center;
+      border-bottom: 1px solid var(--fb-border);
+    }
+    .fb-profile-avatar-frame {
+      position: absolute;
+      bottom: -24px;
+      left: 16px;
+      width: 116px;
+      height: 116px;
+      background: #ffffff;
+      padding: 4px;
+      border: 1px solid #b3b3b3;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      border-radius: 2px;
+      z-index: 10;
+    }
+
+    /* Barre de notification toast non-bloquante */
+    #toast-container {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 340px;
+    }
+    .fb-toast {
+      background: #fff9d7;
+      border: 1px solid #e2c822;
+      color: #333333;
+      padding: 10px 12px;
+      border-radius: 3px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      font-size: 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      animation: slideIn 0.2s ease-out;
+    }
+    .fb-toast.success {
+      background: #eef7ea;
+      border-color: #67a54b;
+    }
+    .fb-toast.error {
+      background: #ffebe8;
+      border-color: #dd3c10;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(12px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Scrollbars fines rétro */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #bcc4d4;
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8b9dc3;
+    }
+  </style>
+</head>
+<body class="theme-classic-2010">
+
+  <!-- ======================================================================
+       0. ÉCRAN D'INSCRIPTION RÉTRO FACEBOOK 2009–2012 (PREMIÈRE OUVERTURE VIERGE)
+       ====================================================================== -->
+  <div id="onboarding-screen" class="hidden min-h-screen flex flex-col bg-[#edf0f5]">
+    <!-- Barre supérieure bleue d'accueil 2010 -->
+    <div class="bg-gradient-to-b from-[#4e69a2] to-[#3b5998] border-b border-[#133783] shadow-sm">
+      <div class="max-w-[980px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2 text-white">
+          <span class="fb-logo-text text-[28px] sm:text-[32px] leading-none">Фрайсбук</span>
+          <span class="text-[11px] bg-white/15 border border-white/25 px-2 py-0.5 rounded text-blue-100">Fraisebook</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="fb-btn-secondary cursor-pointer py-1.5 px-3 text-[11px]">
+            <i class="fas fa-file-import text-[#3b5998]"></i> Importer une sauvegarde (.json)
+            <input type="file" accept=".json,application/json" class="hidden" onchange="app.handleOnboardingImport(event)" />
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenu central d'inscription style Facebook 2010 -->
+    <div class="max-w-[980px] w-full mx-auto px-4 py-8 flex-1 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+      <!-- Colonne gauche : Présentation nostalgique -->
+      <div class="md:col-span-7 space-y-5 pt-2">
+        <h1 class="text-[20px] sm:text-[22px] font-bold text-[#0e385f] leading-snug m-0">
+          Avec Фрайсбук (Fraisebook), partagez et restez en contact avec vos personnages RP et votre entourage.
+        </h1>
+
+        <!-- Illustration carte réseau rétro SVG -->
+        <div class="bg-white border border-[#d8dfea] rounded-[3px] p-4 shadow-sm">
+          <svg viewBox="0 0 520 190" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="netGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#eef2fa"/>
+                <stop offset="100%" stop-color="#d8dfea"/>
+              </linearGradient>
+            </defs>
+            <rect width="520" height="190" rx="4" fill="url(#netGrad)"/>
+            <line x1="110" y1="95" x2="260" y2="48" stroke="#3b5998" stroke-width="2" stroke-dasharray="4 3"/>
+            <line x1="110" y1="95" x2="260" y2="142" stroke="#3b5998" stroke-width="2" stroke-dasharray="4 3"/>
+            <line x1="260" y1="48" x2="415" y2="95" stroke="#627aad" stroke-width="2"/>
+            <line x1="260" y1="142" x2="415" y2="95" stroke="#627aad" stroke-width="2"/>
+            <line x1="260" y1="48" x2="260" y2="142" stroke="#8b9dc3" stroke-width="1.5"/>
+            <circle cx="110" cy="95" r="28" fill="#3b5998"/>
+            <text x="110" y="101" text-anchor="middle" fill="#fff" font-family="Tahoma" font-weight="bold" font-size="16">ФБ</text>
+            <circle cx="260" cy="48" r="22" fill="#67a54b"/>
+            <text x="260" y="54" text-anchor="middle" fill="#fff" font-size="16">👤</text>
+            <circle cx="260" cy="142" r="22" fill="#d84315"/>
+            <text x="260" y="148" text-anchor="middle" fill="#fff" font-size="16">🚩</text>
+            <circle cx="415" cy="95" r="26" fill="#29447e"/>
+            <text x="415" y="101" text-anchor="middle" fill="#fff" font-size="18">🎮</text>
+          </svg>
+        </div>
+
+        <div class="space-y-3 text-[13px] text-gray-700">
+          <div class="flex items-center gap-3">
+            <i class="fas fa-newspaper text-[#3b5998] text-[20px] w-6 text-center"></i>
+            <span><b>Un réseau 100% vierge prêt à façonner :</b> aucun personnage ni publication imposé au départ.</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fas fa-theater-masks text-[#3b5998] text-[20px] w-6 text-center"></i>
+            <span><b>Système complet de Roleplay :</b> incarnez plusieurs personnages et pages grâce au bouton crayon ✏️.</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fas fa-gamepad text-green-700 text-[20px] w-6 text-center"></i>
+            <span><b>GameRoom pleine page :</b> intégrez vos propres jeux HTML ou IFRAME dans un véritable Canvas Facebook.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonne droite : Formulaire d'inscription 2010 -->
+      <div class="md:col-span-5 bg-white border border-[#bdc7d8] rounded-[4px] p-4 shadow-sm">
+        <h2 class="text-[22px] font-bold text-gray-900 m-0">Inscription</h2>
+        <p class="text-[13px] text-gray-600 mt-0.5 mb-3 pb-2 border-b border-gray-200">
+          C'est gratuit (et ça le restera toujours).
+        </p>
+
+        <div class="space-y-2.5">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Prénom *</label>
+              <input type="text" id="reg_firstName" class="fb-input py-1.5 text-[13px]" placeholder="Votre prénom" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Nom *</label>
+              <input type="text" id="reg_lastName" class="fb-input py-1.5 text-[13px]" placeholder="Votre nom" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Date de naissance</label>
+              <input type="date" id="reg_birthDate" class="fb-input py-1.5" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Ville</label>
+              <input type="text" id="reg_city" class="fb-input py-1.5" placeholder="Ex: Paris, Lyon..." />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Photo de profil</label>
+            <input type="text" id="reg_avatar" class="fb-input py-1.5 mb-1" placeholder="URL d'image (facultatif)" />
+            <input type="file" id="reg_avatar_file" accept="image/*" class="fb-input py-1.5" />
+            <p class="text-[10px] text-gray-500 mt-1">Vous pouvez choisir une image directement depuis votre ordinateur.</p>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-gray-700 mb-0.5">Biographie / Présentation</label>
+            <textarea id="reg_bio" rows="2" class="fb-textarea" placeholder="Quelques mots sur votre compte principal..."></textarea>
+          </div>
+
+          <div class="pt-2">
+            <button onclick="app.completeRegistration()" class="fb-btn-green w-full justify-center py-2 text-[14px] tracking-wide">
+              <i class="fas fa-user-plus mr-1"></i> Créer mon compte Фрайсбук
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-white border-t border-gray-300 py-3 text-center text-[11px] text-gray-500">
+      Фрайсбук (Fraisebook) © 2009–2012 — Toutes vos données sont enregistrées localement et exportables en JSON.
+    </footer>
+  </div>
+
+  <!-- ======================================================================
+       1. BARRE SUPÉRIEURE BLEUE FIXE (STYLE FACEBOOK 2009–2012)
+       ====================================================================== -->
+  <header id="app-topbar" class="fb-topbar">
+    <div class="max-w-[1060px] mx-auto h-full px-2 sm:px-3 flex items-center justify-between gap-2">
+      <!-- Gauche : Logo Фрайсбук + Icônes Notifications -->
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <!-- Bouton menu mobile -->
+        <button id="mobile-menu-toggle" class="md:hidden text-white px-2 py-1 rounded hover:bg-black/20" title="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Logo Фрайсбук -->
+        <a href="#" onclick="app.navigate('home'); return false;" class="flex items-center gap-1.5 text-white no-underline group" title="Фрайсбук (Fraisebook) — Accueil">
+          <span class="fb-logo-text text-[20px] sm:text-[22px] tracking-tight leading-none">Фрайсбук</span>
+          <span class="hidden lg:inline-block text-[10px] bg-white/15 border border-white/25 px-1.5 py-0.5 rounded text-blue-100 font-normal">Fraisebook</span>
+        </a>
+
+        <!-- Icônes Demandes d'amis, Messages, Notifications -->
+        <div class="flex items-center gap-0.5 relative">
+          <!-- Demandes d'amis -->
+          <button id="btn-top-friends" onclick="app.toggleTopDropdown('friends')" class="fb-icon-btn" title="Demandes d'amis">
+            <i class="fas fa-user-friends text-[15px]"></i>
+            <span id="badge-friends" class="fb-badge-count hidden">0</span>
+          </button>
+          <!-- Messages -->
+          <button id="btn-top-messages" onclick="app.toggleTopDropdown('messages')" class="fb-icon-btn" title="Messages">
+            <i class="fas fa-comments text-[15px]"></i>
+            <span id="badge-messages" class="fb-badge-count hidden">0</span>
+          </button>
+          <!-- Notifications -->
+          <button id="btn-top-notifs" onclick="app.toggleTopDropdown('notifs')" class="fb-icon-btn" title="Notifications">
+            <i class="fas fa-globe-europe text-[15px]"></i>
+            <span id="badge-notifs" class="fb-badge-count hidden">0</span>
+          </button>
+
+          <!-- Dropdown dynamique de la barre supérieure -->
+          <div id="top-dropdown-panel" class="fb-dropdown hidden left-0"></div>
+        </div>
+      </div>
+
+      <!-- Centre : Barre de recherche instantanée -->
+      <div class="flex-1 max-w-[360px] relative">
+        <div class="flex items-center bg-white border border-[#1d2a5b] rounded-[2px] overflow-hidden h-[25px]">
+          <input
+            type="text"
+            id="global-search-input"
+            placeholder="Rechercher personnages, pages, publications, jeux..."
+            class="w-full px-2 text-[11px] text-gray-800 focus:outline-none"
+            oninput="app.handleSearch(this.value)"
+            onfocus="app.handleSearch(this.value)"
+          />
+          <button onclick="app.handleSearch(document.getElementById('global-search-input').value)" class="px-2.5 h-full bg-[#f5f6f7] border-l border-gray-300 text-gray-600 hover:bg-gray-200">
+            <i class="fas fa-search text-[11px]"></i>
+          </button>
+        </div>
+        <!-- Résultats de recherche instantanée -->
+        <div id="search-results-dropdown" class="hidden absolute left-0 right-0 top-[28px] bg-white border border-gray-700 shadow-lg z-[1300] max-h-[380px] overflow-y-auto rounded-b-[3px]"></div>
+      </div>
+
+      <!-- Droite : Sélecteur rapide d'identité RP + Navigation rapide -->
+      <div class="flex items-center gap-2 shrink-0">
+        <div class="hidden sm:flex items-center bg-[#29447e] border border-[#1d2f56] rounded-[2px] px-1.5 py-0.5 gap-1.5" title="Choisir l'identité active pour publier, aimer et commenter">
+          <img id="topbar-active-avatar" src="" alt="" class="w-[18px] h-[18px] rounded-[2px] object-cover border border-white/40" />
+          <select id="topbar-identity-select" onchange="app.setActiveIdentity(this.value)" class="bg-transparent text-white text-[11px] font-bold focus:outline-none max-w-[130px] cursor-pointer">
+          </select>
+        </div>
+
+        <button onclick="app.navigate('home')" class="hidden md:inline-block text-white font-bold text-[11px] px-2 py-1 rounded hover:bg-black/15">Accueil</button>
+        <button onclick="app.navigate('profile')" class="hidden md:inline-block text-white font-bold text-[11px] px-2 py-1 rounded hover:bg-black/15">Profil</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       1B. LECTEUR GAMEROOM PLEINE ZONE STYLE CANVAS FACEBOOK 2010–2012
+       (Occupe toute la largeur et hauteur sous la barre bleue supérieure)
+       ====================================================================== -->
+  <section id="gameroom-canvas-view" class="hidden fixed top-[42px] left-0 right-0 bottom-0 z-[900] bg-[#141823] flex flex-col">
+    <!-- Barre de contrôle Canvas supérieure -->
+    <div class="bg-[#29447e] border-b border-[#1d2f56] text-white px-3 py-1.5 flex flex-wrap items-center justify-between gap-2 shrink-0">
+      <div class="flex items-center gap-2 min-w-0">
+        <img id="canvas-game-icon" src="" alt="" class="w-5 h-5 rounded-[2px] bg-white p-0.5 object-cover shrink-0" />
+        <span id="canvas-game-title" class="font-bold text-[13px] truncate">Jeu GameRoom</span>
+        <span id="canvas-game-mode-badge" class="text-[10px] bg-black/30 border border-white/20 px-1.5 py-0.5 rounded text-blue-100">Canvas</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-1.5">
+        <button id="canvas-share-btn" class="fb-btn-primary text-[11px] py-1">
+          <i class="fas fa-share"></i> Partager sur mon mur
+        </button>
+        <button id="canvas-view-page-btn" class="fb-btn-secondary text-[11px] py-1">
+          <i class="fas fa-flag text-orange-600"></i> Page du jeu
+        </button>
+        <button id="canvas-popup-btn" class="fb-btn-secondary text-[11px] py-1 hidden" title="Ouvrir le lien directement dans une fenêtre dédiée">
+          <i class="fas fa-external-link-alt text-[#3b5998]"></i> Fenêtre externe
+        </button>
+        <button onclick="app.reloadCanvasGame()" class="fb-btn-secondary text-[11px] py-1" title="Recharger le jeu">
+          <i class="fas fa-sync-alt"></i> Recharger
+        </button>
+        <button onclick="app.toggleCanvasFullscreen()" class="fb-btn-secondary text-[11px] py-1" title="Basculer en plein écran">
+          <i class="fas fa-expand"></i> Plein écran
+        </button>
+        <button onclick="app.closeGamePlayer()" class="fb-btn-danger text-[11px] py-1">
+          <i class="fas fa-times"></i> Quitter le jeu
+        </button>
+      </div>
+    </div>
+
+    <!-- Bandeau d'assistance discret pour les sites externes à protection X-Frame-Options -->
+    <div id="canvas-iframe-helper-bar" class="hidden bg-[#fff9d7] border-b border-[#e2c822] text-[#333333] px-3 py-1 text-[11px] flex flex-wrap items-center justify-between gap-2 shrink-0">
+      <span>
+        <i class="fas fa-info-circle text-[#3b5998] mr-1"></i>
+        <b>Mode IFRAME complet activé :</b> Si le site externe refuse l'affichage intégré (sécurité X-Frame-Options/CSP du site distant), utilisez le bouton d'ouverture externe à droite.
+      </span>
+      <div class="flex items-center gap-2">
+        <button id="canvas-helper-open-btn" class="fb-btn-primary py-0.5 px-2 text-[10px]">
+          <i class="fas fa-external-link-alt"></i> Ouvrir le jeu dans un onglet dédié
+        </button>
+        <button onclick="document.getElementById('canvas-iframe-helper-bar').classList.add('hidden')" class="text-gray-500 hover:text-black font-bold px-1">×</button>
+      </div>
+    </div>
+
+    <!-- Zone de jeu pleine surface (100% largeur x 100% hauteur restante) -->
+    <div id="canvas-iframe-container" class="flex-1 w-full h-full relative bg-black overflow-hidden">
+      <!-- Iframe injectée dynamiquement sur 100% de la surface -->
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       2. CONTENEUR PRINCIPAL 3 COLONNES (STYLE FACEBOOK 2010)
+       ====================================================================== -->
+  <div id="app-shell" class="max-w-[1060px] mx-auto pt-[54px] pb-10 px-2 sm:px-3">
+    <div class="flex flex-col md:flex-row gap-3 items-start">
+
+      <!-- COLONNE GAUCHE : PROFIL ACTIF & MENU PRINCIPAL -->
+      <aside id="left-sidebar" class="hidden md:block w-full md:w-[195px] shrink-0 space-y-3">
+        <!-- Carte Identité Active -->
+        <div class="fb-card p-2">
+          <div class="flex items-center gap-2">
+            <img id="sidebar-active-avatar" src="" alt="Avatar" class="w-[44px] h-[44px] object-cover border border-gray-300 rounded-[2px] cursor-pointer" onclick="app.navigate('profile')" />
+            <div class="min-w-0 flex-1">
+              <div id="sidebar-active-name" class="fb-link text-[12px] truncate" onclick="app.navigate('profile')">Utilisateur</div>
+              <div id="sidebar-active-type" class="text-[10px] text-gray-500">Compte Principal</div>
+              <button onclick="app.navigate('settings', 'characters')" class="text-[10px] text-[#3b5998] hover:underline mt-0.5 block">
+                <i class="fas fa-exchange-alt mr-0.5"></i>Changer d'identité
+              </button>
+            </div>
+          </div>
+
+          <!-- Sélecteur mobile/compact d'identité -->
+          <div class="mt-2 pt-2 border-t border-gray-200">
+            <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Agir en tant que :</label>
+            <select id="sidebar-identity-select" onchange="app.setActiveIdentity(this.value)" class="fb-select text-[11px] py-1"></select>
+          </div>
+        </div>
+
+        <!-- Menu Principal -->
+        <nav class="fb-card p-1.5">
+          <div class="text-[10px] font-bold text-gray-400 uppercase px-2 py-1">Menu Principal</div>
+          <div id="main-nav-list">
+            <div class="fb-nav-item active" data-nav="home" onclick="app.navigate('home')">
+              <span><i class="fas fa-newspaper w-4 text-[#3b5998] mr-1.5"></i>Accueil</span>
+            </div>
+            <div class="fb-nav-item" data-nav="profile" onclick="app.navigate('profile')">
+              <span><i class="fas fa-user w-4 text-[#3b5998] mr-1.5"></i>Profil</span>
+            </div>
+            <div class="fb-nav-item" data-nav="friends" onclick="app.navigate('friends')">
+              <span><i class="fas fa-user-friends w-4 text-[#3b5998] mr-1.5"></i>Amis</span>
+              <span id="nav-friends-count" class="text-[10px] bg-gray-200 px-1.5 rounded font-bold text-gray-700">0</span>
+            </div>
+            <div class="fb-nav-item" data-nav="messages" onclick="app.navigate('messages')">
+              <span><i class="fas fa-envelope w-4 text-[#3b5998] mr-1.5"></i>Messages</span>
+              <span id="nav-messages-count" class="text-[10px] bg-[#d8dfea] px-1.5 rounded font-bold text-[#3b5998]">0</span>
+            </div>
+            <div class="fb-nav-item" data-nav="pages" onclick="app.navigate('pages')">
+              <span><i class="fas fa-flag w-4 text-orange-600 mr-1.5"></i>Pages</span>
+              <span id="nav-pages-count" class="text-[10px] text-gray-500">0</span>
+            </div>
+            <div class="fb-nav-item" data-nav="gameroom" onclick="app.navigate('gameroom')">
+              <span><i class="fas fa-gamepad w-4 text-green-600 mr-1.5"></i>GameRoom</span>
+              <span id="nav-games-count" class="text-[10px] bg-green-100 text-green-800 px-1.5 rounded font-bold">0</span>
+            </div>
+            <div class="border-t border-gray-200 my-1"></div>
+            <div class="fb-nav-item" data-nav="settings" onclick="app.navigate('settings')">
+              <span><i class="fas fa-cog w-4 text-gray-600 mr-1.5"></i>Paramètres</span>
+            </div>
+            <div class="fb-nav-item" data-nav="admin" onclick="app.navigate('admin')">
+              <span><i class="fas fa-shield-alt w-4 text-red-700 mr-1.5"></i>Administration</span>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Raccourcis : Applications & Jeux GameRoom -->
+        <div class="fb-card p-1.5">
+          <div class="flex items-center justify-between px-2 py-1">
+            <span class="text-[10px] font-bold text-gray-400 uppercase">Applications & Jeux</span>
+            <span class="text-[10px] fb-link" onclick="app.navigate('gameroom')">Tout voir</span>
+          </div>
+          <div id="sidebar-games-shortcuts" class="space-y-0.5"></div>
+        </div>
+
+        <!-- Raccourcis : Personnages RP rapides -->
+        <div class="fb-card p-1.5">
+          <div class="flex items-center justify-between px-2 py-1">
+            <span class="text-[10px] font-bold text-gray-400 uppercase">Mes Personnages RP</span>
+            <span class="text-[10px] fb-link" onclick="app.navigate('settings', 'characters')">+ Créer</span>
+          </div>
+          <div id="sidebar-characters-shortcuts" class="space-y-0.5"></div>
+        </div>
+      </aside>
+
+      <!-- COLONNE CENTRALE : CONTENU DYNAMIQUE PRINCIPAL -->
+      <main id="main-content-area" class="flex-1 min-w-0 w-full space-y-3">
+        <!-- Rendu dynamique par JavaScript -->
+      </main>
+
+      <!-- COLONNE DROITE : SUGGESTIONS, GAMEROOM, ACTIVITÉ & RÉTRO PUB -->
+      <aside id="right-sidebar" class="w-full lg:w-[245px] shrink-0 space-y-3">
+        <!-- Demandes d'amis en attente -->
+        <div id="right-requests-box" class="fb-card hidden">
+          <div class="fb-box-header flex justify-between items-center">
+            <span><i class="fas fa-user-plus text-[#3b5998] mr-1"></i>Demandes d'amis</span>
+            <span class="fb-link text-[10px]" onclick="app.navigate('friends')">Voir tout</span>
+          </div>
+          <div id="right-requests-list" class="p-2 space-y-2"></div>
+        </div>
+
+        <!-- Personnages RP que vous connaissez peut-être -->
+        <div class="fb-card">
+          <div class="fb-box-header flex justify-between items-center">
+            <span>Personnages RP suggérés</span>
+            <span class="fb-link text-[10px]" onclick="app.navigate('friends')">Annuaire</span>
+          </div>
+          <div id="right-suggestions-list" class="p-2 space-y-2.5"></div>
+        </div>
+
+        <!-- Jeux recommandés dans GameRoom -->
+        <div class="fb-card">
+          <div class="fb-box-header flex justify-between items-center">
+            <span><i class="fas fa-dice text-green-600 mr-1"></i>Jeux sur GameRoom</span>
+            <span class="fb-link text-[10px]" onclick="app.navigate('gameroom')">Portail</span>
+          </div>
+          <div id="right-games-list" class="p-2 space-y-2"></div>
+        </div>
+
+        <!-- Encart Publicitaire Rétro 2010 -->
+        <div class="fb-card p-2.5 bg-[#f7f8fa]">
+          <div class="flex justify-between items-center text-[10px] text-gray-400 mb-1">
+            <span>Sponsorisé • Fraisebook RP</span>
+            <i class="fas fa-ad"></i>
+          </div>
+          <div class="fb-link text-[11px] mb-1" onclick="app.navigate('settings', 'backup')">Sauvegardez votre Univers RP !</div>
+          <div class="flex gap-2 items-start">
+            <div class="w-12 h-12 rounded bg-[#3b5998] text-white flex items-center justify-center shrink-0 font-bold text-lg">
+              <i class="fas fa-save"></i>
+            </div>
+            <p class="text-[11px] text-gray-600 m-0">
+              Exportez vos personnages, pages, murs et jeux GameRoom en 1 clic au format JSON portable vers n'importe quel ordinateur.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pied de page rétro Facebook -->
+        <footer class="text-[11px] text-gray-500 px-1 leading-relaxed">
+          <div class="font-bold text-gray-600">Фрайсбук (Fraisebook) © 2009–2012</div>
+          <div class="flex flex-wrap gap-x-2 gap-y-0.5 mt-1">
+            <span class="fb-link font-normal" onclick="app.navigate('home')">Accueil</span> ·
+            <span class="fb-link font-normal" onclick="app.navigate('pages')">Pages</span> ·
+            <span class="fb-link font-normal" onclick="app.navigate('gameroom')">GameRoom</span> ·
+            <span class="fb-link font-normal" onclick="app.navigate('settings', 'backup')">Sauvegarde</span> ·
+            <span class="fb-link font-normal" onclick="app.navigate('admin')">Admin</span>
+          </div>
+        </footer>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       3. MODALES INTERACTIVES (PUBLICATION CRAYON, LECTEUR DE JEU, CONFIRMATION)
+       ====================================================================== -->
+  <!-- Modale universelle -->
+  <div id="universal-modal" class="hidden fixed inset-0 bg-black/60 z-[2000] flex items-center justify-center p-2 sm:p-4">
+    <div id="universal-modal-box" class="bg-white border-2 border-[#3b5998] rounded-[4px] shadow-2xl w-full max-w-[540px] max-h-[92vh] flex flex-col overflow-hidden">
+      <div class="bg-[#3b5998] text-white px-3 py-2 flex items-center justify-between font-bold text-[13px]">
+        <span id="universal-modal-title">Action</span>
+        <button onclick="app.closeModal()" class="text-white/80 hover:text-white px-1.5">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="universal-modal-body" class="p-3 overflow-y-auto flex-1"></div>
+    </div>
+  </div>
+
+  <!-- Conteneur de notifications Toast -->
+  <div id="toast-container"></div>
+
+  <!-- ======================================================================
+       4. MOTEUR APPLICATIF COMPLET DE ФРАЙСБУК (FRAISEBOOK)
+       ====================================================================== -->
+  <script>
+    /**
+     * Générateur d'avatars SVG rétro intégrés (garantit 100% d'affichage hors-ligne sans erreur réseau)
+     */
+    function makeSvgAvatar(initials, bgHex, fgHex = "#ffffff", icon = null) {
+      const content = icon
+        ? `<text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="46">${icon}</text>`
+        : `<text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Tahoma, sans-serif" font-weight="bold" font-size="38" fill="${fgHex}">${initials}</text>`;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="${bgHex}" stop-opacity="0.88"/>
+            <stop offset="100%" stop-color="${bgHex}" stop-opacity="1"/>
+          </linearGradient>
+        </defs>
+        <rect width="120" height="120" fill="url(#g)"/>
+        ${content}
+      </svg>`;
+      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+    }
+
+    function makeSvgCover(title, c1, c2) {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="240" viewBox="0 0 800 240">
+        <defs>
+          <linearGradient id="cg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${c1}"/>
+            <stop offset="100%" stop-color="${c2}"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="240" fill="url(#cg)"/>
+        <circle cx="720" cy="40" r="90" fill="#ffffff" fill-opacity="0.08"/>
+        <circle cx="110" cy="210" r="120" fill="#ffffff" fill-opacity="0.06"/>
+        <text x="770" y="218" text-anchor="end" font-family="Tahoma, sans-serif" font-size="14" font-weight="bold" fill="#ffffff" fill-opacity="0.45">${title}</text>
+      </svg>`;
+      return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+    }
+
+    const FALLBACK_AVATAR = makeSvgAvatar("ФБ", "#3b5998");
+    const FALLBACK_COVER = makeSvgCover("Фрайсбук • Fraisebook", "#3b5998", "#1d2f56");
+
+    /**
+     * État vierge initial : aucun personnage, aucune page, aucun jeu, aucune publication
+     * L'utilisateur crée son compte principal sur l'écran d'inscription à la première ouverture.
+     */
+    function createEmptyState(mainUserObj = null) {
+      return {
+        schemaVersion: "1.0",
+        appName: "Fraisebook",
+        isInitialized: Boolean(mainUserObj),
+        settings: {
+          siteName: "Фрайсбук",
+          siteSubtitle: "Fraisebook",
+          theme: "theme-classic-2010",
+          compactFeed: false,
+          showFeelingBadges: true
+        },
+        activeIdentityId: mainUserObj ? mainUserObj.id : null,
+        mainUser: mainUserObj,
+        characters: [],
+        pages: [],
+        games: [],
+        friendships: [],
+        friendRequests: [],
+        posts: [],
+        messages: [],
+        notifications: []
+      };
+    }
+
+    /**
+     * Application principale Фрайсбук (Fraisebook)
+     */
+    const app = {
+      STORAGE_KEY: "fraisebook_rp_state_v2",
+      BACKUPS_KEY: "fraisebook_rp_backups_v2",
+      state: null,
+      currentView: "home",
+      viewParam: null,
+      profileSubTab: "wall",
+      pagesCategoryFilter: "ALL",
+      activeChatPartnerId: null,
+      pendingImportData: null,
+      activeCanvasGameId: null,
+
+      init() {
+        this.loadState();
+        this.applyTheme();
+        this.bindGlobalEvents();
+        this.renderAll();
+      },
+
+      loadState() {
+        try {
+          const raw = localStorage.getItem(this.STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === "object") {
+              this.state = parsed;
+              return;
+            }
+          }
+        } catch (e) {
+          console.error("Erreur lecture localStorage:", e);
+        }
+        // Première ouverture : état totalement vierge non initialisé
+        this.state = createEmptyState(null);
+      },
+
+      saveState() {
+        try {
+          localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
+        } catch (e) {
+          this.toast("Attention : espace de stockage navigateur saturé.", "error");
+        }
+      },
+
+      /** Charge une image locale, la compresse et la convertit en Data URL.
+       * L'image est ainsi intégrée aux données et au fichier JSON exporté. */
+      async readImageChoice(fileInputId, urlInputId, fallback = "") {
+        const file = document.getElementById(fileInputId)?.files?.[0];
+        if (file) {
+          if (!file.type.startsWith("image/")) throw new Error("Veuillez choisir un fichier image.");
+          if (file.size > 12 * 1024 * 1024) throw new Error("L'image dépasse 12 Mo.");
+          const source = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = e => resolve(e.target.result);
+            reader.onerror = () => reject(new Error("Impossible de lire l'image."));
+            reader.readAsDataURL(file);
+          });
+          return await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+              const max = 1400;
+              const scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+              const canvas = document.createElement("canvas");
+              canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+              canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+              const ctx = canvas.getContext("2d");
+              ctx.fillStyle = "#ffffff";
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              try { resolve(canvas.toDataURL("image/jpeg", 0.78)); }
+              catch (err) { reject(new Error("Impossible de convertir cette image.")); }
+            };
+            img.onerror = () => reject(new Error("Le fichier image est illisible."));
+            img.src = source;
+          });
+        }
+        const url = (document.getElementById(urlInputId)?.value || "").trim();
+        if (url && !this.isValidUrl(url)) throw new Error("L'URL de l'image doit commencer par http:// ou https://.");
+        return url || fallback;
+      },
+
+      /**
+       * Validation de l'inscription initiale et création du compte vierge
+       */
+      async completeRegistration() {
+        const firstName = (document.getElementById("reg_firstName")?.value || "").trim();
+        const lastName = (document.getElementById("reg_lastName")?.value || "").trim();
+        if (!firstName || !lastName) {
+          this.toast("Veuillez renseigner votre prénom et votre nom pour créer votre compte.", "error");
+          return;
+        }
+        const initials = (firstName[0] + lastName[0]).toUpperCase();
+        let avatarUrl;
+        try { avatarUrl = await this.readImageChoice("reg_avatar_file", "reg_avatar", ""); }
+        catch (err) { this.toast(err.message, "error"); return; }
+        const birthDate = document.getElementById("reg_birthDate")?.value || "";
+        const city = (document.getElementById("reg_city")?.value || "").trim();
+        const bio = (document.getElementById("reg_bio")?.value || "").trim();
+
+        const mainUser = {
+          id: "user_main",
+          type: "main",
+          firstName,
+          lastName,
+          birthDate,
+          city,
+          bio,
+          status: "",
+          extraInfo: "",
+          avatar: avatarUrl || makeSvgAvatar(initials, "#3b5998"),
+          cover: makeSvgCover(`${firstName} ${lastName} • Фрайсбук`, "#3b5998", "#1d2f56"),
+          createdAt: Date.now()
+        };
+
+        this.state = createEmptyState(mainUser);
+        this.saveState();
+        this.applyTheme();
+        this.toast(`Bienvenue sur Фрайсбук, ${firstName} ! Votre réseau vierge est prêt.`, "success");
+        this.renderAll();
+      },
+
+      /**
+       * Importation directe depuis l'écran d'accueil/inscription
+       */
+      handleOnboardingImport(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const parsed = JSON.parse(e.target.result);
+            if (!parsed || parsed.appName !== "Fraisebook" || !parsed.data || !parsed.data.mainUser) {
+              this.toast("Fichier invalide : ce fichier n'est pas une sauvegarde Фрайсбук reconnue.", "error");
+              return;
+            }
+            const imported = JSON.parse(JSON.stringify(parsed.data));
+            imported.isInitialized = true;
+            imported.characters = Array.isArray(imported.characters) ? imported.characters : [];
+            imported.pages = Array.isArray(imported.pages) ? imported.pages : [];
+            imported.games = Array.isArray(imported.games) ? imported.games : [];
+            imported.posts = Array.isArray(imported.posts) ? imported.posts : [];
+            imported.messages = Array.isArray(imported.messages) ? imported.messages : [];
+            imported.friendships = Array.isArray(imported.friendships) ? imported.friendships : [];
+            imported.friendRequests = Array.isArray(imported.friendRequests) ? imported.friendRequests : [];
+            imported.notifications = Array.isArray(imported.notifications) ? imported.notifications : [];
+            imported.settings = imported.settings || createEmptyState().settings;
+
+            this.state = imported;
+            this.saveState();
+            this.applyTheme();
+            this.toast("Sauvegarde importée avec succès ! Bienvenue sur votre univers Фрайсбук.", "success");
+            this.renderAll();
+          } catch {
+            this.toast("Impossible de lire ce fichier JSON.", "error");
+          }
+        };
+        reader.readAsText(file);
+      },
+
+      applyTheme() {
+        document.body.className = this.state.settings.theme || "theme-classic-2010";
+        const logoEls = document.querySelectorAll(".fb-logo-text");
+        logoEls.forEach(el => {
+          el.textContent = this.state.settings.siteName || "Фрайсбук";
+        });
+      },
+
+      bindGlobalEvents() {
+        // Fermeture des menus déroulants au clic extérieur
+        document.addEventListener("click", (e) => {
+          const topDrop = document.getElementById("top-dropdown-panel");
+          if (topDrop && !topDrop.classList.contains("hidden")) {
+            if (!e.target.closest("#top-dropdown-panel") && !e.target.closest(".fb-icon-btn")) {
+              topDrop.classList.add("hidden");
+            }
+          }
+          const searchDrop = document.getElementById("search-results-dropdown");
+          if (searchDrop && !searchDrop.classList.contains("hidden")) {
+            if (!e.target.closest("#search-results-dropdown") && !e.target.closest("#global-search-input")) {
+              searchDrop.classList.add("hidden");
+            }
+          }
+        });
+
+        // Menu mobile
+        const mobBtn = document.getElementById("mobile-menu-toggle");
+        if (mobBtn) {
+          mobBtn.addEventListener("click", () => {
+            const sb = document.getElementById("left-sidebar");
+            sb.classList.toggle("hidden");
+          });
+        }
+      },
+
+      // ======================================================================
+      // UTILITAIRES D'IDENTITÉ & ENTITÉS (COMPTE PRINCIPAL, PERSONNAGES, PAGES)
+      // ======================================================================
+      getAllIdentities() {
+        const list = [
+          {
+            id: this.state.mainUser.id,
+            type: "main",
+            name: `${this.state.mainUser.firstName} ${this.state.mainUser.lastName}`,
+            avatar: this.state.mainUser.avatar || FALLBACK_AVATAR,
+            label: "Compte Principal"
+          }
+        ];
+        this.state.characters.forEach(c => {
+          list.push({
+            id: c.id,
+            type: "character",
+            name: `${c.firstName} ${c.lastName}`,
+            avatar: c.avatar || FALLBACK_AVATAR,
+            label: "Personnage RP"
+          });
+        });
+        this.state.pages.forEach(p => {
+          list.push({
+            id: p.id,
+            type: "page",
+            name: p.name,
+            avatar: p.avatar || FALLBACK_AVATAR,
+            label: "Page Facebook"
+          });
+        });
+        return list;
+      },
+
+      getEntityById(id) {
+        if (!id) return null;
+        if (id === this.state.mainUser.id) {
+          const u = this.state.mainUser;
+          return {
+            ...u,
+            type: "main",
+            displayName: `${u.firstName} ${u.lastName}`,
+            avatar: u.avatar || FALLBACK_AVATAR,
+            cover: u.cover || FALLBACK_COVER
+          };
+        }
+        const char = this.state.characters.find(c => c.id === id);
+        if (char) {
+          return {
+            ...char,
+            type: "character",
+            displayName: `${char.firstName} ${char.lastName}`,
+            avatar: char.avatar || FALLBACK_AVATAR,
+            cover: char.cover || FALLBACK_COVER
+          };
+        }
+        const page = this.state.pages.find(p => p.id === id);
+        if (page) {
+          return {
+            ...page,
+            type: "page",
+            displayName: page.name,
+            avatar: page.avatar || FALLBACK_AVATAR,
+            cover: page.cover || FALLBACK_COVER
+          };
+        }
+        return null;
+      },
+
+      getActiveEntity() {
+        let ent = this.getEntityById(this.state.activeIdentityId);
+        if (!ent) {
+          this.state.activeIdentityId = this.state.mainUser.id;
+          ent = this.getEntityById(this.state.mainUser.id);
+        }
+        return ent;
+      },
+
+      setActiveIdentity(id) {
+        if (!this.getEntityById(id)) return;
+        this.state.activeIdentityId = id;
+        this.saveState();
+        const ent = this.getActiveEntity();
+        this.toast(`Vous agissez désormais en tant que : ${ent.displayName}`, "success");
+        this.renderAll();
+      },
+
+      formatTime(ts) {
+        const diff = Math.floor((Date.now() - ts) / 1000);
+        if (diff < 60) return "À l'instant";
+        if (diff < 3600) return `Il y a ${Math.floor(diff / 60)} min`;
+        if (diff < 86400) return `Il y a ${Math.floor(diff / 3600)} h`;
+        const d = new Date(ts);
+        return d.toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+      },
+
+      escapeHtml(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      },
+
+      isValidUrl(url) {
+        if (!url || typeof url !== "string") return false;
+        const trimmed = url.trim();
+        if (trimmed.startsWith("data:image/")) return true;
+        try {
+          const u = new URL(trimmed);
+          return u.protocol === "http:" || u.protocol === "https:";
+        } catch {
+          return false;
+        }
+      },
+
+      /**
+       * Extraction et normalisation intelligente d'une URL ou balise <iframe> pour maximiser la compatibilité web
+       */
+      extractIframeUrl(rawInput) {
+        if (!rawInput || typeof rawInput !== "string") return "";
+        let val = rawInput.trim();
+
+        // 1. Si l'utilisateur a collé une balise HTML complète <iframe ... src="...">
+        const srcDoubleMatch = val.match(/<iframe[^>]*\bsrc\s*=\s*"([^"]+)"/i);
+        const srcSingleMatch = val.match(/<iframe[^>]*\bsrc\s*=\s*'([^']+)'/i);
+        const srcUnquotedMatch = val.match(/<iframe[^>]*\bsrc\s*=\s*([^\s>]+)/i);
+
+        if (srcDoubleMatch && srcDoubleMatch[1]) {
+          val = srcDoubleMatch[1].trim();
+        } else if (srcSingleMatch && srcSingleMatch[1]) {
+          val = srcSingleMatch[1].trim();
+        } else if (srcUnquotedMatch && srcUnquotedMatch[1]) {
+          val = srcUnquotedMatch[1].trim();
+        }
+
+        // 2. Décodage des entités HTML fréquentes (&amp;)
+        val = val.replace(/&amp;/g, "&");
+
+        // 3. Ajout automatique du protocole https:// si l'utilisateur a saisi un domaine nu (ex: itch.io/...)
+        if (val && !/^https?:\/\//i.test(val) && !val.startsWith("data:") && !val.startsWith("blob:")) {
+          if (val.startsWith("//")) {
+            val = "https:" + val;
+          } else if (/^[a-z0-9.-]+\.[a-z]{2,}/i.test(val)) {
+            val = "https://" + val;
+          }
+        }
+
+        return val;
+      },
+
+      toast(message, type = "info") {
+        const container = document.getElementById("toast-container");
+        const el = document.createElement("div");
+        el.className = `fb-toast ${type}`;
+        el.innerHTML = `
+          <div class="flex-1">${this.escapeHtml(message)}</div>
+          <button onclick="this.parentElement.remove()" class="text-gray-500 hover:text-black font-bold">×</button>
+        `;
+        container.appendChild(el);
+        setTimeout(() => {
+          if (el.parentElement) el.remove();
+        }, 4200);
+      },
+
+      // ======================================================================
+      // NAVIGATION ENTRE VUES
+      // ======================================================================
+      navigate(view, param = null) {
+        // Fermer le lecteur Canvas plein écran si on navigue ailleurs
+        if (this.activeCanvasGameId) {
+          this.closeGamePlayer(false);
+        }
+        this.currentView = view;
+        this.viewParam = param;
+        if (view === "profile") {
+          this.profileSubTab = "wall";
+        }
+        // Fermer le menu mobile si ouvert
+        if (window.innerWidth < 768) {
+          document.getElementById("left-sidebar").classList.add("hidden");
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        this.renderAll();
+      },
+
+      // ======================================================================
+      // RENDU GLOBAL (ÉCRAN INSCRIPTION OU APPLICATION COMPLÈTE)
+      // ======================================================================
+      renderAll() {
+        const onboardingEl = document.getElementById("onboarding-screen");
+        const topbarEl = document.getElementById("app-topbar");
+        const shellEl = document.getElementById("app-shell");
+
+        // Si le compte n'est pas encore créé, afficher uniquement l'écran d'inscription vierge
+        if (!this.state || !this.state.isInitialized || !this.state.mainUser) {
+          onboardingEl.classList.remove("hidden");
+          topbarEl.classList.add("hidden");
+          shellEl.classList.add("hidden");
+          return;
+        }
+
+        onboardingEl.classList.add("hidden");
+        topbarEl.classList.remove("hidden");
+        shellEl.classList.remove("hidden");
+
+        this.renderTopBarAndSidebars();
+        const main = document.getElementById("main-content-area");
+        switch (this.currentView) {
+          case "home":
+            main.innerHTML = this.renderHomeView();
+            break;
+          case "profile":
+            main.innerHTML = this.renderProfileView(this.viewParam || this.state.activeIdentityId);
+            break;
+          case "friends":
+            main.innerHTML = this.renderFriendsView();
+            break;
+          case "messages":
+            main.innerHTML = this.renderMessagesView();
+            break;
+          case "pages":
+            main.innerHTML = this.renderPagesView();
+            break;
+          case "gameroom":
+            main.innerHTML = this.renderGameRoomView();
+            break;
+          case "settings":
+            main.innerHTML = this.renderSettingsView(this.viewParam || "general");
+            break;
+          case "admin":
+            main.innerHTML = this.renderAdminView();
+            break;
+          default:
+            main.innerHTML = this.renderHomeView();
+        }
+      },
+
+      renderTopBarAndSidebars() {
+        const active = this.getActiveEntity();
+        const identities = this.getAllIdentities();
+
+        // Sélecteurs d'identité (topbar + sidebar gauche)
+        const optionsHtml = identities.map(idObj =>
+          `<option value="${idObj.id}" ${idObj.id === active.id ? "selected" : ""} class="text-black bg-white">
+            ${this.escapeHtml(idObj.name)} (${idObj.label})
+          </option>`
+        ).join("");
+
+        const topSel = document.getElementById("topbar-identity-select");
+        const sideSel = document.getElementById("sidebar-identity-select");
+        if (topSel) topSel.innerHTML = optionsHtml;
+        if (sideSel) sideSel.innerHTML = optionsHtml;
+
+        document.getElementById("topbar-active-avatar").src = active.avatar;
+        document.getElementById("sidebar-active-avatar").src = active.avatar;
+        document.getElementById("sidebar-active-name").textContent = active.displayName;
+        document.getElementById("sidebar-active-type").textContent =
+          active.type === "main" ? "Compte Principal" : active.type === "character" ? "Personnage RP" : "Page Facebook";
+
+        // Compteurs badges notifications
+        const incomingReqs = this.state.friendRequests.filter(r => r.toId === active.id);
+        const unreadMsgs = this.state.messages.filter(m => m.toId === active.id && !m.read);
+        const unreadNotifs = this.state.notifications.filter(n => !n.read);
+
+        this.updateBadge("badge-friends", incomingReqs.length);
+        this.updateBadge("badge-messages", unreadMsgs.length);
+        this.updateBadge("badge-notifs", unreadNotifs.length);
+
+        // Compteurs menu gauche
+        const myFriends = this.getFriendsOf(active.id);
+        document.getElementById("nav-friends-count").textContent = myFriends.length;
+        document.getElementById("nav-messages-count").textContent = unreadMsgs.length;
+        document.getElementById("nav-pages-count").textContent = this.state.pages.length;
+        document.getElementById("nav-games-count").textContent = this.state.games.length;
+
+        // Surbrillance onglet actif
+        document.querySelectorAll("#main-nav-list .fb-nav-item").forEach(el => {
+          el.classList.toggle("active", el.dataset.nav === this.currentView);
+        });
+
+        // Raccourcis Jeux GameRoom dans sidebar gauche
+        const gamesShortcutEl = document.getElementById("sidebar-games-shortcuts");
+        if (this.state.games.length === 0) {
+          gamesShortcutEl.innerHTML = `<div class="text-[11px] text-gray-400 px-2 py-1">Aucun jeu installé</div>`;
+        } else {
+          gamesShortcutEl.innerHTML = this.state.games.map(g => `
+            <div class="fb-nav-item text-[11px]" onclick="app.launchGame('${g.id}')">
+              <span class="flex items-center gap-1.5 truncate">
+                <img src="${this.escapeHtml(g.icon || FALLBACK_AVATAR)}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-4 h-4 rounded-[2px] object-cover shrink-0" />
+                <span class="truncate">${this.escapeHtml(g.name)}</span>
+              </span>
+              <i class="fas fa-play text-[9px] text-green-600"></i>
+            </div>
+          `).join("");
+        }
+
+        // Raccourcis Personnages RP dans sidebar gauche
+        const charsShortcutEl = document.getElementById("sidebar-characters-shortcuts");
+        if (this.state.characters.length === 0) {
+          charsShortcutEl.innerHTML = `<div class="text-[11px] text-gray-400 px-2 py-1">Aucun personnage RP</div>`;
+        } else {
+          charsShortcutEl.innerHTML = this.state.characters.map(c => `
+            <div class="fb-nav-item text-[11px]" onclick="app.navigate('profile', '${c.id}')">
+              <span class="flex items-center gap-1.5 truncate">
+                <img src="${this.escapeHtml(c.avatar || FALLBACK_AVATAR)}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-4 h-4 rounded-[2px] object-cover shrink-0" />
+                <span class="truncate">${this.escapeHtml(c.firstName + " " + c.lastName)}</span>
+              </span>
+              <button onclick="event.stopPropagation(); app.openIdentityComposerModal('${c.id}')" title="Publier en tant que ${this.escapeHtml(c.firstName)}" class="text-gray-500 hover:text-[#3b5998] px-1">
+                <i class="fas fa-pencil-alt text-[10px]"></i>
+              </button>
+            </div>
+          `).join("");
+        }
+
+        // Colonne droite : Demandes d'amis
+        const rightReqBox = document.getElementById("right-requests-box");
+        const rightReqList = document.getElementById("right-requests-list");
+        if (incomingReqs.length > 0) {
+          rightReqBox.classList.remove("hidden");
+          rightReqList.innerHTML = incomingReqs.map(req => {
+            const sender = this.getEntityById(req.fromId);
+            if (!sender) return "";
+            return `
+              <div class="flex items-start gap-2 border-b border-gray-100 pb-2 last:border-none last:pb-0">
+                <img src="${sender.avatar}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-9 h-9 rounded-[2px] object-cover cursor-pointer" onclick="app.navigate('profile', '${sender.id}')" />
+                <div class="flex-1 min-w-0">
+                  <div class="fb-link text-[11px] truncate" onclick="app.navigate('profile', '${sender.id}')">${this.escapeHtml(sender.displayName)}</div>
+                  <div class="flex gap-1 mt-1">
+                    <button onclick="app.acceptFriendRequest('${req.id}')" class="fb-btn-primary py-0.5 px-2 text-[10px]">Confirmer</button>
+                    <button onclick="app.declineFriendRequest('${req.id}')" class="fb-btn-secondary py-0.5 px-2 text-[10px]">Ignorer</button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join("");
+        } else {
+          rightReqBox.classList.add("hidden");
+        }
+
+        // Colonne droite : Suggestions de personnages RP
+        const allPeople = [this.state.mainUser, ...this.state.characters].filter(p => p && p.id !== active.id);
+        const suggestions = allPeople.filter(p => !this.areFriends(active.id, p.id) && !this.hasPendingRequest(active.id, p.id)).slice(0, 4);
+        const suggEl = document.getElementById("right-suggestions-list");
+        if (suggestions.length === 0) {
+          suggEl.innerHTML = `<div class="text-[11px] text-gray-500">Aucun autre personnage disponible. Créez-en dans <b>Paramètres</b> !</div>`;
+        } else {
+          suggEl.innerHTML = suggestions.map(p => {
+            const name = `${p.firstName} ${p.lastName}`;
+            return `
+              <div class="flex items-center gap-2">
+                <img src="${this.escapeHtml(p.avatar || FALLBACK_AVATAR)}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-9 h-9 rounded-[2px] object-cover cursor-pointer" onclick="app.navigate('profile', '${p.id}')" />
+                <div class="flex-1 min-w-0">
+                  <div class="fb-link text-[11px] truncate" onclick="app.navigate('profile', '${p.id}')">${this.escapeHtml(name)}</div>
+                  <div class="text-[10px] text-gray-500 truncate">${this.escapeHtml(p.city || "Univers RP")}</div>
+                  <button onclick="app.sendFriendRequest('${active.id}', '${p.id}')" class="fb-btn-secondary py-0.5 px-1.5 text-[10px] mt-1">
+                    <i class="fas fa-user-plus text-[#3b5998]"></i> Ajouter en ami
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+
+        // Colonne droite : Jeux populaires GameRoom
+        const rightGamesEl = document.getElementById("right-games-list");
+        if (this.state.games.length === 0) {
+          rightGamesEl.innerHTML = `<div class="text-[11px] text-gray-500">Aucun jeu disponible.</div>`;
+        } else {
+          rightGamesEl.innerHTML = this.state.games.slice(0, 3).map(g => `
+            <div class="flex items-center gap-2">
+              <img src="${this.escapeHtml(g.icon || FALLBACK_AVATAR)}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-9 h-9 rounded-[2px] object-cover border border-gray-200 cursor-pointer" onclick="app.launchGame('${g.id}')" />
+              <div class="flex-1 min-w-0">
+                <div class="fb-link text-[11px] truncate" onclick="app.launchGame('${g.id}')">${this.escapeHtml(g.name)}</div>
+                <div class="text-[10px] text-gray-500 truncate">${this.escapeHtml(g.description)}</div>
+              </div>
+              <button onclick="app.launchGame('${g.id}')" class="fb-btn-green py-0.5 px-2 text-[10px] shrink-0">Jouer</button>
+            </div>
+          `).join("");
+        }
+      },
+
+      updateBadge(id, count) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (count > 0) {
+          el.textContent = count;
+          el.classList.remove("hidden");
+        } else {
+          el.classList.add("hidden");
+        }
+      },
+
+      // ======================================================================
+      // DROPDOWNS BARRE SUPÉRIEURE & RECHERCHE MULTI-CATÉGORIES
+      // ======================================================================
+      toggleTopDropdown(type) {
+        const panel = document.getElementById("top-dropdown-panel");
+        const isSame = !panel.classList.contains("hidden") && panel.dataset.type === type;
+        if (isSame) {
+          panel.classList.add("hidden");
+          return;
+        }
+        panel.dataset.type = type;
+        panel.classList.remove("hidden");
+        const active = this.getActiveEntity();
+
+        if (type === "friends") {
+          const reqs = this.state.friendRequests.filter(r => r.toId === active.id);
+          panel.innerHTML = `
+            <div class="fb-box-header flex justify-between">
+              <span>Demandes d'amis pour ${this.escapeHtml(active.displayName)}</span>
+              <span class="fb-link text-[10px]" onclick="app.navigate('friends'); document.getElementById('top-dropdown-panel').classList.add('hidden')">Tout voir</span>
+            </div>
+            <div class="max-h-[280px] overflow-y-auto divide-y divide-gray-200">
+              ${reqs.length === 0 ? `<div class="p-3 text-center text-gray-500">Aucune nouvelle demande d'ami.</div>` : reqs.map(r => {
+                const s = this.getEntityById(r.fromId);
+                if (!s) return "";
+                return `
+                  <div class="p-2 flex items-center justify-between gap-2 hover:bg-gray-50">
+                    <div class="flex items-center gap-2 min-w-0">
+                      <img src="${s.avatar}" class="w-9 h-9 rounded-[2px] object-cover" />
+                      <span class="fb-link text-[11px] truncate" onclick="app.navigate('profile', '${s.id}')">${this.escapeHtml(s.displayName)}</span>
+                    </div>
+                    <div class="flex gap-1 shrink-0">
+                      <button onclick="app.acceptFriendRequest('${r.id}')" class="fb-btn-primary text-[10px] py-0.5 px-1.5">Accepter</button>
+                      <button onclick="app.declineFriendRequest('${r.id}')" class="fb-btn-secondary text-[10px] py-0.5 px-1.5">Refuser</button>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          `;
+        } else if (type === "messages") {
+          const msgs = this.state.messages.filter(m => m.toId === active.id || m.fromId === active.id).slice().reverse().slice(0, 6);
+          panel.innerHTML = `
+            <div class="fb-box-header flex justify-between">
+              <span>Messages récents</span>
+              <span class="fb-link text-[10px]" onclick="app.navigate('messages'); document.getElementById('top-dropdown-panel').classList.add('hidden')">Boîte de réception</span>
+            </div>
+            <div class="max-h-[280px] overflow-y-auto divide-y divide-gray-200">
+              ${msgs.length === 0 ? `<div class="p-3 text-center text-gray-500">Aucun message récent.</div>` : msgs.map(m => {
+                const otherId = m.fromId === active.id ? m.toId : m.fromId;
+                const other = this.getEntityById(otherId);
+                if (!other) return "";
+                return `
+                  <div class="p-2 flex items-start gap-2 hover:bg-blue-50 cursor-pointer ${!m.read && m.toId === active.id ? 'bg-[#edeff4]' : ''}"
+                       onclick="app.activeChatPartnerId='${other.id}'; app.navigate('messages'); document.getElementById('top-dropdown-panel').classList.add('hidden')">
+                    <img src="${other.avatar}" class="w-9 h-9 rounded-[2px] object-cover" />
+                    <div class="flex-1 min-w-0">
+                      <div class="font-bold text-[11px] text-[#3b5998]">${this.escapeHtml(other.displayName)}</div>
+                      <div class="text-[11px] text-gray-600 truncate">${this.escapeHtml(m.text)}</div>
+                      <div class="text-[9px] text-gray-400">${this.formatTime(m.createdAt)}</div>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          `;
+        } else if (type === "notifs") {
+          this.state.notifications.forEach(n => n.read = true);
+          this.saveState();
+          this.updateBadge("badge-notifs", 0);
+          const notifs = this.state.notifications.slice().reverse().slice(0, 8);
+          panel.innerHTML = `
+            <div class="fb-box-header flex justify-between">
+              <span>Notifications</span>
+              <span class="text-[10px] text-gray-500">Historique récent</span>
+            </div>
+            <div class="max-h-[280px] overflow-y-auto divide-y divide-gray-200">
+              ${notifs.length === 0 ? `<div class="p-3 text-center text-gray-500">Aucune notification.</div>` : notifs.map(n => {
+                const actor = this.getEntityById(n.actorId);
+                return `
+                  <div class="p-2 flex items-start gap-2 hover:bg-gray-50 cursor-pointer" onclick="app.navigate('${n.targetNav || 'home'}'); document.getElementById('top-dropdown-panel').classList.add('hidden')">
+                    <img src="${actor ? actor.avatar : FALLBACK_AVATAR}" class="w-8 h-8 rounded-[2px] object-cover" />
+                    <div class="flex-1">
+                      <div class="text-[11px] text-gray-800">${this.escapeHtml(n.text)}</div>
+                      <div class="text-[9px] text-gray-400">${this.formatTime(n.createdAt)}</div>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          `;
+        }
+      },
+
+      handleSearch(query) {
+        const drop = document.getElementById("search-results-dropdown");
+        const q = (query || "").trim().toLowerCase();
+        if (!q) {
+          drop.classList.add("hidden");
+          return;
+        }
+        drop.classList.remove("hidden");
+
+        const matchedPeople = [this.state.mainUser, ...this.state.characters].filter(p =>
+          `${p.firstName} ${p.lastName} ${p.city || ""} ${p.bio || ""}`.toLowerCase().includes(q)
+        );
+        const matchedPages = this.state.pages.filter(p =>
+          `${p.name} ${p.category} ${p.description}`.toLowerCase().includes(q)
+        );
+        const matchedGames = this.state.games.filter(g =>
+          `${g.name} ${g.description}`.toLowerCase().includes(q)
+        );
+        const matchedPosts = this.state.posts.filter(post =>
+          post.content.toLowerCase().includes(q)
+        ).slice(0, 4);
+
+        let html = "";
+        if (matchedPeople.length > 0) {
+          html += `<div class="bg-[#f2f4f8] px-2 py-1 font-bold text-[10px] text-gray-600 uppercase">Personnages & Profils</div>`;
+          html += matchedPeople.map(p => `
+            <div class="px-2.5 py-1.5 flex items-center gap-2 hover:bg-[#3b5998] hover:text-white cursor-pointer group"
+                 onclick="app.navigate('profile', '${p.id}'); document.getElementById('search-results-dropdown').classList.add('hidden')">
+              <img src="${p.avatar || FALLBACK_AVATAR}" class="w-7 h-7 rounded-[2px] object-cover" />
+              <div class="min-w-0 flex-1">
+                <div class="font-bold text-[11px] truncate">${this.escapeHtml(p.firstName + " " + p.lastName)}</div>
+                <div class="text-[10px] opacity-75 truncate">${this.escapeHtml(p.city || "Personnage RP")}</div>
+              </div>
+            </div>
+          `).join("");
+        }
+
+        if (matchedPages.length > 0) {
+          html += `<div class="bg-[#f2f4f8] px-2 py-1 font-bold text-[10px] text-gray-600 uppercase border-t">Pages Facebook</div>`;
+          html += matchedPages.map(p => `
+            <div class="px-2.5 py-1.5 flex items-center gap-2 hover:bg-[#3b5998] hover:text-white cursor-pointer"
+                 onclick="app.navigate('profile', '${p.id}'); document.getElementById('search-results-dropdown').classList.add('hidden')">
+              <img src="${p.avatar || FALLBACK_AVATAR}" class="w-7 h-7 rounded-[2px] object-cover" />
+              <div class="min-w-0 flex-1">
+                <div class="font-bold text-[11px] truncate">${this.escapeHtml(p.name)}</div>
+                <div class="text-[10px] opacity-75 truncate">${this.escapeHtml(p.category)}</div>
+              </div>
+            </div>
+          `).join("");
+        }
+
+        if (matchedGames.length > 0) {
+          html += `<div class="bg-[#f2f4f8] px-2 py-1 font-bold text-[10px] text-gray-600 uppercase border-t">Jeux GameRoom</div>`;
+          html += matchedGames.map(g => `
+            <div class="px-2.5 py-1.5 flex items-center justify-between gap-2 hover:bg-[#3b5998] hover:text-white cursor-pointer"
+                 onclick="app.launchGame('${g.id}'); document.getElementById('search-results-dropdown').classList.add('hidden')">
+              <div class="flex items-center gap-2 min-w-0">
+                <img src="${g.icon || FALLBACK_AVATAR}" class="w-7 h-7 rounded-[2px] object-cover" />
+                <span class="font-bold text-[11px] truncate">${this.escapeHtml(g.name)}</span>
+              </div>
+              <span class="text-[10px] bg-green-600 text-white px-1.5 py-0.5 rounded font-bold">Jouer</span>
+            </div>
+          `).join("");
+        }
+
+        if (matchedPosts.length > 0) {
+          html += `<div class="bg-[#f2f4f8] px-2 py-1 font-bold text-[10px] text-gray-600 uppercase border-t">Publications</div>`;
+          html += matchedPosts.map(post => {
+            const auth = this.getEntityById(post.authorId);
+            return `
+              <div class="px-2.5 py-1.5 hover:bg-[#3b5998] hover:text-white cursor-pointer"
+                   onclick="app.navigate('home'); document.getElementById('search-results-dropdown').classList.add('hidden')">
+                <div class="font-bold text-[10px]">${auth ? this.escapeHtml(auth.displayName) : "Membre"}</div>
+                <div class="text-[11px] truncate">${this.escapeHtml(post.content)}</div>
+              </div>
+            `;
+          }).join("");
+        }
+
+        if (!html) {
+          html = `<div class="p-3 text-center text-gray-500 text-[11px]">Aucun résultat trouvé pour « ${this.escapeHtml(query)} ».</div>`;
+        }
+        drop.innerHTML = html;
+      },
+
+      // ======================================================================
+      // SYSTÈME DE PUBLICATION, COMMENTAIRES, J'AIME ET PARTAGES
+      // ======================================================================
+      renderComposerBox(forcedAuthorId = null, wallOwnerId = null, compactTitle = null) {
+        const identities = this.getAllIdentities();
+        const selectedId = forcedAuthorId || this.state.activeIdentityId;
+        const selectedEnt = this.getEntityById(selectedId) || this.getActiveEntity();
+        const uid = "comp_" + Math.random().toString(36).slice(2, 8);
+
+        return `
+          <div class="fb-card p-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2 mb-2 border-b border-gray-200">
+              <div class="flex items-center gap-1.5 text-[11px] font-bold text-[#3b5998]">
+                <i class="fas fa-edit"></i>
+                <span>${compactTitle || "Exprimez-vous sur Фрайсбук"}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] text-gray-500">Publier en tant que :</span>
+                <select id="${uid}_author" class="fb-select py-0.5 px-1.5 text-[11px] w-auto font-bold text-[#3b5998]"
+                        onchange="document.getElementById('${uid}_avatar').src = app.getEntityById(this.value).avatar">
+                  ${identities.map(idObj => `
+                    <option value="${idObj.id}" ${idObj.id === selectedEnt.id ? "selected" : ""}>
+                      ${this.escapeHtml(idObj.name)} (${idObj.label})
+                    </option>
+                  `).join("")}
+                </select>
+              </div>
+            </div>
+
+            <div class="flex gap-2 items-start">
+              <img id="${uid}_avatar" src="${selectedEnt.avatar}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-10 h-10 rounded-[2px] object-cover border border-gray-300 shrink-0" />
+              <div class="flex-1 space-y-2">
+                <textarea id="${uid}_text" rows="2" class="fb-textarea" placeholder="Quoi de neuf, ${this.escapeHtml(selectedEnt.displayName)} ?"></textarea>
+                <div id="${uid}_extras" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2 bg-[#f7f8fa] p-2 border border-gray-200 rounded-[2px]">
+                  <div class="space-y-1">
+                    <input type="text" id="${uid}_img" class="fb-input text-[11px]" placeholder="URL d'une image (facultatif)" />
+                    <input type="file" id="${uid}_img_file" accept="image/*" class="fb-input text-[11px]" />
+                  </div>
+                  <input type="text" id="${uid}_feeling" class="fb-input text-[11px]" placeholder="Humeur / Lieu (ex: inspiré, à Paris...)" />
+                </div>
+                <div class="flex items-center justify-between pt-1">
+                  <button type="button" onclick="document.getElementById('${uid}_extras').classList.toggle('hidden')" class="fb-btn-secondary text-[10px] py-1">
+                    <i class="fas fa-camera text-green-700"></i> Photo / Humeur
+                  </button>
+                  <button type="button" onclick="app.submitPost('${uid}', '${wallOwnerId || ""}')" class="fb-btn-primary">
+                    <i class="fas fa-paper-plane"></i> Publier
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      },
+
+      async submitPost(uid, wallOwnerId = "") {
+        const authorId = document.getElementById(`${uid}_author`).value;
+        const text = document.getElementById(`${uid}_text`).value.trim();
+        let imgUrl;
+        try { imgUrl = await this.readImageChoice(`${uid}_img_file`, `${uid}_img`, ""); }
+        catch (err) { this.toast(err.message, "error"); return; }
+        const feeling = (document.getElementById(`${uid}_feeling`)?.value || "").trim();
+
+        if (!text && !imgUrl) {
+          this.toast("Veuillez écrire un message ou ajouter une image avant de publier.", "error");
+          return;
+        }
+        if (imgUrl && !this.isValidUrl(imgUrl)) {
+          this.toast("L'URL de l'image n'est pas valide (doit commencer par http:// ou https://).", "error");
+          return;
+        }
+
+        const newPost = {
+          id: "post_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+          authorId,
+          wallOwnerId: wallOwnerId || authorId,
+          content: text,
+          image: imgUrl,
+          feeling,
+          likes: [],
+          comments: [],
+          sharedFrom: null,
+          createdAt: Date.now()
+        };
+
+        this.state.posts.unshift(newPost);
+        this.saveState();
+        this.closeModal();
+        this.toast("Publication ajoutée sur Фрайсбук !", "success");
+        this.renderAll();
+      },
+
+      /**
+       * Modale déclenchée par le bouton crayon (✏️) sur un personnage ou une page
+       */
+      openIdentityComposerModal(entityId) {
+        const ent = this.getEntityById(entityId);
+        if (!ent) return;
+        const modal = document.getElementById("universal-modal");
+        document.getElementById("universal-modal-title").innerHTML =
+          `<i class="fas fa-pencil-alt mr-1.5"></i>Publier en tant que ${this.escapeHtml(ent.displayName)}`;
+        document.getElementById("universal-modal-body").innerHTML =
+          this.renderComposerBox(ent.id, ent.id, `Nouvelle publication officielle de ${this.escapeHtml(ent.displayName)}`);
+        modal.classList.remove("hidden");
+      },
+
+      closeModal() {
+        document.getElementById("universal-modal").classList.add("hidden");
+      },
+
+      toggleLikePost(postId) {
+        const post = this.state.posts.find(p => p.id === postId);
+        if (!post) return;
+        const active = this.getActiveEntity();
+        const idx = post.likes.indexOf(active.id);
+        if (idx === -1) {
+          post.likes.push(active.id);
+          if (post.authorId !== active.id) {
+            this.state.notifications.push({
+              id: "notif_" + Date.now(),
+              toId: post.authorId,
+              actorId: active.id,
+              text: `${active.displayName} a aimé une publication.`,
+              targetNav: "home",
+              read: false,
+              createdAt: Date.now()
+            });
+          }
+        } else {
+          post.likes.splice(idx, 1);
+        }
+        this.saveState();
+        this.renderAll();
+      },
+
+      addComment(postId, inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        const text = input.value.trim();
+        if (!text) return;
+        const post = this.state.posts.find(p => p.id === postId);
+        if (!post) return;
+
+        const active = this.getActiveEntity();
+        post.comments.push({
+          id: "com_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5),
+          authorId: active.id,
+          text,
+          createdAt: Date.now()
+        });
+
+        if (post.authorId !== active.id) {
+          this.state.notifications.push({
+            id: "notif_" + Date.now(),
+            toId: post.authorId,
+            actorId: active.id,
+            text: `${active.displayName} a commenté une publication : « ${text.slice(0, 40)} »`,
+            targetNav: "home",
+            read: false,
+            createdAt: Date.now()
+          });
+        }
+
+        this.saveState();
+        this.renderAll();
+      },
+
+      sharePost(postId) {
+        const original = this.state.posts.find(p => p.id === postId);
+        if (!original) return;
+        const active = this.getActiveEntity();
+        const origAuthor = this.getEntityById(original.authorId);
+
+        const sharedPost = {
+          id: "post_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+          authorId: active.id,
+          wallOwnerId: active.id,
+          content: original.content,
+          image: original.image,
+          feeling: "",
+          likes: [],
+          comments: [],
+          sharedFrom: {
+            postId: original.id,
+            authorName: origAuthor ? origAuthor.displayName : "Membre Фрайсбук",
+            authorId: original.authorId
+          },
+          createdAt: Date.now()
+        };
+
+        this.state.posts.unshift(sharedPost);
+        this.saveState();
+        this.toast(`Publication partagée sur le mur de ${active.displayName} !`, "success");
+        this.renderAll();
+      },
+
+      deletePost(postId) {
+        this.state.posts = this.state.posts.filter(p => p.id !== postId);
+        this.saveState();
+        this.toast("Publication supprimée.", "info");
+        this.renderAll();
+      },
+
+      deleteComment(postId, commentId) {
+        const post = this.state.posts.find(p => p.id === postId);
+        if (!post) return;
+        post.comments = post.comments.filter(c => c.id !== commentId);
+        this.saveState();
+        this.renderAll();
+      },
+
+      renderPostCard(post) {
+        const author = this.getEntityById(post.authorId) || {
+          id: "unknown",
+          displayName: "Utilisateur supprimé",
+          avatar: FALLBACK_AVATAR,
+          type: "main"
+        };
+        const wallOwner = post.wallOwnerId && post.wallOwnerId !== post.authorId ? this.getEntityById(post.wallOwnerId) : null;
+        const active = this.getActiveEntity();
+        const isLiked = post.likes.includes(active.id);
+        const commentInputId = `cinput_${post.id}`;
+
+        const badgeType =
+          author.type === "page"
+            ? `<span class="text-[9px] bg-orange-100 text-orange-800 border border-orange-200 px-1 rounded ml-1">Page</span>`
+            : author.type === "character"
+            ? `<span class="text-[9px] bg-blue-100 text-[#3b5998] border border-blue-200 px-1 rounded ml-1">RP</span>`
+            : "";
+
+        const likerNames = post.likes
+          .map(lid => this.getEntityById(lid)?.displayName)
+          .filter(Boolean);
+
+        return `
+          <article class="fb-card p-3">
+            <div class="flex items-start gap-2.5">
+              <img src="${author.avatar}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-[46px] h-[46px] rounded-[2px] object-cover border border-gray-300 cursor-pointer shrink-0" onclick="app.navigate('profile', '${author.id}')" />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <span class="fb-link text-[12px]" onclick="app.navigate('profile', '${author.id}')">${this.escapeHtml(author.displayName)}</span>
+                    ${badgeType}
+                    ${wallOwner ? `<i class="fas fa-caret-right text-gray-400 mx-1"></i><span class="fb-link text-[12px]" onclick="app.navigate('profile', '${wallOwner.id}')">${this.escapeHtml(wallOwner.displayName)}</span>` : ""}
+                    ${post.feeling && this.state.settings.showFeelingBadges ? `<span class="text-[11px] text-gray-500"> — se sent <b>${this.escapeHtml(post.feeling)}</b></span>` : ""}
+                    ${post.sharedFrom ? `<div class="text-[11px] text-gray-500 mt-0.5"><i class="fas fa-share text-[#3b5998] mr-1"></i>a partagé une publication de <span class="fb-link font-normal" onclick="app.navigate('profile', '${post.sharedFrom.authorId}')">${this.escapeHtml(post.sharedFrom.authorName)}</span></div>` : ""}
+                    <div class="text-[10px] text-gray-400">${this.formatTime(post.createdAt)}</div>
+                  </div>
+                  <button onclick="app.deletePost('${post.id}')" title="Supprimer la publication" class="text-gray-400 hover:text-red-600 text-[11px] px-1">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+
+                <!-- Contenu texte -->
+                ${post.content ? `<div class="mt-2 text-[12px] text-gray-800 whitespace-pre-line break-words ${post.sharedFrom ? 'border-l-2 border-[#d8dfea] pl-2.5 py-0.5 bg-gray-50' : ''}">${this.escapeHtml(post.content)}</div>` : ""}
+
+                <!-- Image attachée -->
+                ${post.image ? `
+                  <div class="mt-2">
+                    <img src="${this.escapeHtml(post.image)}" onerror="this.style.display='none'" class="max-h-[340px] max-w-full rounded-[2px] border border-gray-300 object-contain bg-gray-50" />
+                  </div>
+                ` : ""}
+
+                <!-- Barre d'actions rétro (J'aime · Commenter · Partager) -->
+                <div class="mt-2.5 pt-1.5 border-t border-gray-100 flex flex-wrap items-center gap-2 text-[11px]">
+                  <button onclick="app.toggleLikePost('${post.id}')" class="fb-link font-normal hover:underline flex items-center gap-1">
+                    <i class="${isLiked ? 'fas text-[#3b5998]' : 'far'} fa-thumbs-up"></i>
+                    <span>${isLiked ? "Je n'aime plus" : "J'aime"}</span>
+                  </button>
+                  <span class="text-gray-300">·</span>
+                  <button onclick="document.getElementById('${commentInputId}').focus()" class="fb-link font-normal hover:underline flex items-center gap-1">
+                    <i class="far fa-comment-alt"></i>
+                    <span>Commenter</span>
+                  </button>
+                  <span class="text-gray-300">·</span>
+                  <button onclick="app.sharePost('${post.id}')" class="fb-link font-normal hover:underline flex items-center gap-1">
+                    <i class="fas fa-share"></i>
+                    <span>Partager</span>
+                  </button>
+                </div>
+
+                <!-- Encadré bleu pâle classique des J'aime et Commentaires -->
+                <div class="mt-2 bg-[#edeff4] border-t border-[#d8dfea] rounded-[2px] divide-y divide-[#e5eaf1]">
+                  ${likerNames.length > 0 ? `
+                    <div class="px-2.5 py-1.5 text-[11px] text-gray-700 flex items-center gap-1.5">
+                      <i class="fas fa-thumbs-up text-[#3b5998]"></i>
+                      <span><b>${likerNames.slice(0, 4).map(n => this.escapeHtml(n)).join(", ")}</b>${likerNames.length > 4 ? ` et ${likerNames.length - 4} autres` : ""} ${likerNames.length > 1 ? "aiment" : "aime"} ça.</span>
+                    </div>
+                  ` : ""}
+
+                  <!-- Liste des commentaires -->
+                  ${post.comments.map(c => {
+                    const cAuth = this.getEntityById(c.authorId) || { id: "", displayName: "Membre", avatar: FALLBACK_AVATAR };
+                    return `
+                      <div class="px-2.5 py-1.5 flex items-start gap-2 group">
+                        <img src="${cAuth.avatar}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-7 h-7 rounded-[2px] object-cover shrink-0 cursor-pointer" onclick="app.navigate('profile', '${cAuth.id}')" />
+                        <div class="flex-1 min-w-0 text-[11px]">
+                          <span class="fb-link mr-1" onclick="app.navigate('profile', '${cAuth.id}')">${this.escapeHtml(cAuth.displayName)}</span>
+                          <span class="text-gray-800 break-words">${this.escapeHtml(c.text)}</span>
+                          <div class="text-[10px] text-gray-400 mt-0.5">${this.formatTime(c.createdAt)}</div>
+                        </div>
+                        <button onclick="app.deleteComment('${post.id}', '${c.id}')" class="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-600 text-[10px]" title="Supprimer">×</button>
+                      </div>
+                    `;
+                  }).join("")}
+
+                  <!-- Zone d'ajout de commentaire sous l'identité active -->
+                  <div class="px-2.5 py-1.5 flex items-center gap-2">
+                    <img src="${active.avatar}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-7 h-7 rounded-[2px] object-cover shrink-0" />
+                    <input
+                      type="text"
+                      id="${commentInputId}"
+                      placeholder="Écrire un commentaire en tant que ${this.escapeHtml(active.displayName)}..."
+                      class="fb-input py-1 text-[11px]"
+                      onkeydown="if(event.key==='Enter'){ app.addComment('${post.id}', '${commentInputId}'); }"
+                    />
+                    <button onclick="app.addComment('${post.id}', '${commentInputId}')" class="fb-btn-secondary py-1 px-2 text-[10px] shrink-0">Envoyer</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      },
+
+      // ======================================================================
+      // VUE 1 : ACCUEIL (FIL D'ACTUALITÉ)
+      // ======================================================================
+      renderHomeView() {
+        const sortedPosts = this.state.posts.slice().sort((a, b) => b.createdAt - a.createdAt);
+        return `
+          ${this.renderComposerBox()}
+          <div class="flex items-center justify-between px-1">
+            <span class="font-bold text-[12px] text-gray-700"><i class="fas fa-stream text-[#3b5998] mr-1"></i>Fil d'actualité en direct</span>
+            <span class="text-[11px] text-gray-500">${sortedPosts.length} publication(s)</span>
+          </div>
+          <div class="space-y-2.5">
+            ${sortedPosts.length === 0
+              ? `<div class="fb-card p-6 text-center text-gray-500">Aucune publication pour le moment. Exprimez-vous ci-dessus !</div>`
+              : sortedPosts.map(p => this.renderPostCard(p)).join("")}
+          </div>
+        `;
+      },
+
+      // ======================================================================
+      // VUE 2 : PROFIL (COMPTE PRINCIPAL, PERSONNAGE RP OU PAGE FACEBOOK)
+      // ======================================================================
+      renderProfileView(entityId) {
+        const ent = this.getEntityById(entityId) || this.getActiveEntity();
+        const active = this.getActiveEntity();
+        const isSelf = ent.id === active.id;
+        const isPage = ent.type === "page";
+
+        // Relations d'amitié (pour personnes/personnages)
+        const areFriends = !isPage && !isSelf && this.areFriends(active.id, ent.id);
+        const sentReq = !isPage && !isSelf && this.state.friendRequests.find(r => r.fromId === active.id && r.toId === ent.id);
+        const recvReq = !isPage && !isSelf && this.state.friendRequests.find(r => r.fromId === ent.id && r.toId === active.id);
+
+        // Likes de page
+        const pageLiked = isPage && (ent.likes || []).includes(active.id);
+        const linkedGame = isPage && ent.isGamePage ? this.state.games.find(g => g.id === ent.gameId || g.pageId === ent.id) : null;
+
+        // Publications du mur de cette entité
+        const wallPosts = this.state.posts
+          .filter(p => p.authorId === ent.id || p.wallOwnerId === ent.id)
+          .sort((a, b) => b.createdAt - a.createdAt);
+
+        const friendsList = !isPage ? this.getFriendsOf(ent.id) : [];
+
+        return `
+          <div class="fb-card overflow-hidden">
+            <!-- Photo de couverture style Timeline 2011-2012 -->
+            <div class="fb-cover-container" style="background-image: url('${this.escapeHtml(ent.cover)}')">
+              <div class="fb-profile-avatar-frame">
+                <img src="${ent.avatar}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-full h-full object-cover" />
+              </div>
+              <!-- Bouton crayon ✏️ obligatoire pour publier en tant que ce personnage/page -->
+              <button
+                onclick="app.openIdentityComposerModal('${ent.id}')"
+                title="Publier une publication en tant que ${this.escapeHtml(ent.displayName)}"
+                class="absolute top-2.5 right-2.5 bg-white/95 hover:bg-white text-[#3b5998] border border-[#29447e] px-2.5 py-1 rounded-[2px] shadow font-bold text-[11px] flex items-center gap-1.5 cursor-pointer"
+              >
+                <i class="fas fa-pencil-alt"></i>
+                <span>Publier en tant que ${this.escapeHtml(isPage ? ent.name : ent.firstName)}</span>
+              </button>
+            </div>
+
+            <!-- En-tête du profil sous la couverture -->
+            <div class="pt-7 pb-3 px-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-gray-200">
+              <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h1 class="text-[18px] font-bold text-gray-900 m-0">${this.escapeHtml(ent.displayName)}</h1>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded font-bold ${isPage ? 'bg-orange-100 text-orange-800' : 'bg-[#edeff4] text-[#3b5998]'}">
+                    ${isPage ? `Page · ${this.escapeHtml(ent.category)}` : ent.type === "character" ? "Personnage RP" : "Compte Principal"}
+                  </span>
+                </div>
+                ${!isPage && ent.status ? `<div class="text-[12px] text-gray-600 italic mt-0.5">« ${this.escapeHtml(ent.status)} »</div>` : ""}
+                ${isPage ? `<div class="text-[11px] text-gray-500 mt-0.5"><i class="fas fa-thumbs-up text-[#3b5998] mr-1"></i>${(ent.likes || []).length} personne(s) aiment cette page</div>` : ""}
+              </div>
+
+              <!-- Boutons d'action contextuels -->
+              <div class="flex flex-wrap items-center gap-1.5">
+                <!-- Bouton Crayon rapide -->
+                <button onclick="app.openIdentityComposerModal('${ent.id}')" class="fb-btn-secondary" title="Publier en tant que cette identité">
+                  <i class="fas fa-pencil-alt text-[#3b5998]"></i>
+                </button>
+
+                ${isPage ? `
+                  <button onclick="app.toggleLikePage('${ent.id}')" class="${pageLiked ? 'fb-btn-secondary' : 'fb-btn-primary'}">
+                    <i class="fas fa-thumbs-up"></i> ${pageLiked ? "Aimée ✓" : "J'aime"}
+                  </button>
+                  ${linkedGame ? `
+                    <button onclick="app.launchGame('${linkedGame.id}')" class="fb-btn-green">
+                      <i class="fas fa-gamepad"></i> Jouer
+                    </button>
+                  ` : ""}
+                  <button onclick="app.navigate('settings', 'pages')" class="fb-btn-secondary">
+                    <i class="fas fa-edit"></i> Modifier la page
+                  </button>
+                ` : `
+                  ${isSelf ? `
+                    <button onclick="app.navigate('settings', '${ent.type === 'character' ? 'characters' : 'general'}')" class="fb-btn-secondary">
+                      <i class="fas fa-edit"></i> Modifier le profil
+                    </button>
+                  ` : `
+                    ${areFriends ? `
+                      <button onclick="app.removeFriend('${active.id}', '${ent.id}')" class="fb-btn-secondary" title="Cliquer pour retirer des amis">
+                        <i class="fas fa-check text-green-600"></i> Amis
+                      </button>
+                    ` : sentReq ? `
+                      <button onclick="app.cancelFriendRequest('${sentReq.id}')" class="fb-btn-secondary">
+                        <i class="fas fa-clock"></i> Demande envoyée
+                      </button>
+                    ` : recvReq ? `
+                      <button onclick="app.acceptFriendRequest('${recvReq.id}')" class="fb-btn-primary">
+                        <i class="fas fa-user-check"></i> Accepter la demande
+                      </button>
+                    ` : `
+                      <button onclick="app.sendFriendRequest('${active.id}', '${ent.id}')" class="fb-btn-primary">
+                        <i class="fas fa-user-plus"></i> Ajouter en ami
+                      </button>
+                    `}
+                    <button onclick="app.activeChatPartnerId='${ent.id}'; app.navigate('messages')" class="fb-btn-secondary">
+                      <i class="fas fa-envelope"></i> Message
+                    </button>
+                    <button onclick="app.setActiveIdentity('${ent.id}')" class="fb-btn-secondary" title="Incarner ce personnage maintenant">
+                      <i class="fas fa-mask text-[#3b5998]"></i> Incarner
+                    </button>
+                  `}
+                `}
+              </div>
+            </div>
+
+            <!-- Onglets du profil : Mur · Infos · Amis/Abonnés -->
+            <div class="px-4 pt-2 bg-[#f7f8fa] flex gap-1 border-b border-gray-200">
+              <div class="fb-subtab ${this.profileSubTab === 'wall' ? 'active' : ''}" onclick="app.profileSubTab='wall'; app.renderAll()">
+                <i class="fas fa-stream mr-1"></i>Mur (${wallPosts.length})
+              </div>
+              <div class="fb-subtab ${this.profileSubTab === 'info' ? 'active' : ''}" onclick="app.profileSubTab='info'; app.renderAll()">
+                <i class="fas fa-info-circle mr-1"></i>Infos
+              </div>
+              <div class="fb-subtab ${this.profileSubTab === 'friends' ? 'active' : ''}" onclick="app.profileSubTab='friends'; app.renderAll()">
+                <i class="fas fa-users mr-1"></i>${isPage ? `Fans (${(ent.likes || []).length})` : `Amis (${friendsList.length})`}
+              </div>
+            </div>
+          </div>
+
+          <!-- Contenu de l'onglet sélectionné sur le profil -->
+          ${this.profileSubTab === "wall" ? `
+            ${this.renderComposerBox(ent.id, ent.id, `Écrire sur le mur de ${this.escapeHtml(ent.displayName)}`)}
+            <div class="space-y-2.5">
+              ${wallPosts.length === 0
+                ? `<div class="fb-card p-6 text-center text-gray-500">Aucune publication sur ce mur pour l'instant.</div>`
+                : wallPosts.map(p => this.renderPostCard(p)).join("")}
+            </div>
+          ` : this.profileSubTab === "info" ? `
+            <div class="fb-card p-4 space-y-3">
+              <div class="font-bold text-[13px] text-[#3b5998] border-b pb-1.5">
+                Informations détaillées — ${this.escapeHtml(ent.displayName)}
+              </div>
+              ${isPage ? `
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[12px]">
+                  <div class="font-bold text-gray-500">Catégorie :</div>
+                  <div class="sm:col-span-2">${this.escapeHtml(ent.category)}</div>
+                  <div class="font-bold text-gray-500">Description :</div>
+                  <div class="sm:col-span-2 whitespace-pre-line">${this.escapeHtml(ent.description)}</div>
+                  <div class="font-bold text-gray-500">Informations supplémentaires :</div>
+                  <div class="sm:col-span-2">${this.escapeHtml(ent.extraInfo || "Non renseigné")}</div>
+                  <div class="font-bold text-gray-500">Page de jeu GameRoom :</div>
+                  <div class="sm:col-span-2">${ent.isGamePage ? "Oui — Associée à GameRoom" : "Non"}</div>
+                </div>
+              ` : `
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[12px]">
+                  <div class="font-bold text-gray-500">Nom complet :</div>
+                  <div class="sm:col-span-2">${this.escapeHtml(ent.firstName + " " + ent.lastName)}</div>
+                  <div class="font-bold text-gray-500">Date de naissance :</div>
+                  <div class="sm:col-span-2">${this.escapeHtml(ent.birthDate || "Non renseignée")}</div>
+                  <div class="font-bold text-gray-500">Ville actuelle :</div>
+                  <div class="sm:col-span-2">${this.escapeHtml(ent.city || "Non renseignée")}</div>
+                  <div class="font-bold text-gray-500">Statut RP :</div>
+                  <div class="sm:col-span-2">${this.escapeHtml(ent.status || "Aucun statut")}</div>
+                  <div class="font-bold text-gray-500">Biographie :</div>
+                  <div class="sm:col-span-2 whitespace-pre-line">${this.escapeHtml(ent.bio || "Aucune biographie")}</div>
+                  <div class="font-bold text-gray-500">Informations personnelles :</div>
+                  <div class="sm:col-span-2">${this.escapeHtml(ent.extraInfo || "Non renseignées")}</div>
+                </div>
+              `}
+            </div>
+          ` : `
+            <div class="fb-card p-3">
+              <div class="font-bold text-[12px] text-gray-700 mb-2">
+                ${isPage ? "Personnes qui aiment cette page" : `Amis de ${this.escapeHtml(ent.displayName)}`}
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                ${(isPage ? (ent.likes || []).map(id => this.getEntityById(id)).filter(Boolean) : friendsList).map(f => `
+                  <div class="flex items-center gap-2.5 p-2 border border-gray-200 rounded-[2px] hover:bg-gray-50">
+                    <img src="${f.avatar}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-11 h-11 rounded-[2px] object-cover cursor-pointer" onclick="app.navigate('profile', '${f.id}')" />
+                    <div class="flex-1 min-w-0">
+                      <div class="fb-link text-[12px] truncate" onclick="app.navigate('profile', '${f.id}')">${this.escapeHtml(f.displayName)}</div>
+                      <div class="text-[10px] text-gray-500 truncate">${this.escapeHtml(f.city || f.category || "")}</div>
+                    </div>
+                  </div>
+                `).join("") || `<div class="col-span-2 text-center text-gray-500 py-4">Aucun contact à afficher.</div>`}
+              </div>
+            </div>
+          `}
+        `;
+      },
+
+      // ======================================================================
+      // SYSTÈME D'AMIS & DEMANDES D'AMIS ENTRE PERSONNAGES RP
+      // ======================================================================
+      pairKey(idA, idB) {
+        return [idA, idB].sort().join("|");
+      },
+
+      areFriends(idA, idB) {
+        return this.state.friendships.includes(this.pairKey(idA, idB));
+      },
+
+      hasPendingRequest(idA, idB) {
+        return this.state.friendRequests.some(
+          r => (r.fromId === idA && r.toId === idB) || (r.fromId === idB && r.toId === idA)
+        );
+      },
+
+      getFriendsOf(entityId) {
+        const result = [];
+        this.state.friendships.forEach(pair => {
+          const [a, b] = pair.split("|");
+          if (a === entityId) {
+            const ent = this.getEntityById(b);
+            if (ent) result.push(ent);
+          } else if (b === entityId) {
+            const ent = this.getEntityById(a);
+            if (ent) result.push(ent);
+          }
+        });
+        return result;
+      },
+
+      sendFriendRequest(fromId, toId) {
+        if (fromId === toId || this.areFriends(fromId, toId) || this.hasPendingRequest(fromId, toId)) return;
+        const sender = this.getEntityById(fromId);
+        const target = this.getEntityById(toId);
+        if (!sender || !target) return;
+
+        this.state.friendRequests.push({
+          id: "req_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5),
+          fromId,
+          toId,
+          createdAt: Date.now()
+        });
+
+        this.state.notifications.push({
+          id: "notif_" + Date.now(),
+          toId,
+          actorId: fromId,
+          text: `${sender.displayName} a envoyé une demande d'ami à ${target.displayName}.`,
+          targetNav: "friends",
+          read: false,
+          createdAt: Date.now()
+        });
+
+        this.saveState();
+        this.toast(`Demande d'ami envoyée à ${target.displayName} !`, "success");
+        this.renderAll();
+      },
+
+      acceptFriendRequest(reqId) {
+        const req = this.state.friendRequests.find(r => r.id === reqId);
+        if (!req) return;
+        const key = this.pairKey(req.fromId, req.toId);
+        if (!this.state.friendships.includes(key)) {
+          this.state.friendships.push(key);
+        }
+        this.state.friendRequests = this.state.friendRequests.filter(r => r.id !== reqId);
+        this.saveState();
+        this.toast("Demande d'ami acceptée !", "success");
+        this.renderAll();
+      },
+
+      declineFriendRequest(reqId) {
+        this.state.friendRequests = this.state.friendRequests.filter(r => r.id !== reqId);
+        this.saveState();
+        this.toast("Demande d'ami refusée.", "info");
+        this.renderAll();
+      },
+
+      cancelFriendRequest(reqId) {
+        this.state.friendRequests = this.state.friendRequests.filter(r => r.id !== reqId);
+        this.saveState();
+        this.toast("Demande d'ami annulée.", "info");
+        this.renderAll();
+      },
+
+      removeFriend(idA, idB) {
+        const key = this.pairKey(idA, idB);
+        this.state.friendships = this.state.friendships.filter(p => p !== key);
+        this.saveState();
+        this.toast("Contact retiré de la liste d'amis.", "info");
+        this.renderAll();
+      },
+
+      renderFriendsView() {
+        const active = this.getActiveEntity();
+        const incoming = this.state.friendRequests.filter(r => r.toId === active.id);
+        const outgoing = this.state.friendRequests.filter(r => r.fromId === active.id);
+        const myFriends = this.getFriendsOf(active.id);
+        const allPeople = [this.state.mainUser, ...this.state.characters]
+          .map(p => this.getEntityById(p.id))
+          .filter(p => p && p.id !== active.id);
+
+        return `
+          <div class="fb-card p-3 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-2">
+              <div>
+                <h2 class="text-[15px] font-bold text-[#3b5998] m-0">
+                  <i class="fas fa-user-friends mr-1.5"></i>Amis & Annuaire RP de ${this.escapeHtml(active.displayName)}
+                </h2>
+                <div class="text-[11px] text-gray-500">Gérez les relations d'amitié entre votre compte et vos personnages RP.</div>
+              </div>
+              <button onclick="app.navigate('settings', 'characters')" class="fb-btn-primary">
+                <i class="fas fa-plus"></i> Créer un personnage RP
+              </button>
+            </div>
+
+            <!-- Demandes d'amis reçues -->
+            ${incoming.length > 0 ? `
+              <div class="bg-[#fff9d7] border border-[#e2c822] p-2.5 rounded-[2px]">
+                <div class="font-bold text-[12px] mb-2">Demandes d'amis reçues (${incoming.length})</div>
+                <div class="space-y-2">
+                  ${incoming.map(r => {
+                    const s = this.getEntityById(r.fromId);
+                    if (!s) return "";
+                    return `
+                      <div class="flex items-center justify-between bg-white p-2 border border-gray-200 rounded-[2px]">
+                        <div class="flex items-center gap-2">
+                          <img src="${s.avatar}" class="w-10 h-10 rounded-[2px] object-cover" />
+                          <div>
+                            <div class="fb-link text-[12px]" onclick="app.navigate('profile', '${s.id}')">${this.escapeHtml(s.displayName)}</div>
+                            <div class="text-[10px] text-gray-500">${this.escapeHtml(s.city || "Personnage RP")}</div>
+                          </div>
+                        </div>
+                        <div class="flex gap-1.5">
+                          <button onclick="app.acceptFriendRequest('${r.id}')" class="fb-btn-primary">Confirmer</button>
+                          <button onclick="app.declineFriendRequest('${r.id}')" class="fb-btn-secondary">Refuser</button>
+                        </div>
+                      </div>
+                    `;
+                  }).join("")}
+                </div>
+              </div>
+            ` : ""}
+
+            <!-- Liste des amis actuels -->
+            <div>
+              <div class="font-bold text-[12px] text-gray-700 mb-2">Mes amis (${myFriends.length})</div>
+              ${myFriends.length === 0
+                ? `<div class="text-[11px] text-gray-500 bg-gray-50 p-3 rounded border border-gray-200">Aucun ami pour le moment. Ajoutez des personnages ci-dessous !</div>`
+                : `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    ${myFriends.map(f => `
+                      <div class="flex items-center justify-between p-2 border border-gray-200 rounded-[2px] bg-white">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                          <img src="${f.avatar}" class="w-12 h-12 rounded-[2px] object-cover cursor-pointer" onclick="app.navigate('profile', '${f.id}')" />
+                          <div class="min-w-0">
+                            <div class="fb-link text-[12px] truncate" onclick="app.navigate('profile', '${f.id}')">${this.escapeHtml(f.displayName)}</div>
+                            <div class="text-[10px] text-gray-500 truncate">${this.escapeHtml(f.city || "")}</div>
+                            <div class="flex gap-1 mt-1">
+                              <button onclick="app.activeChatPartnerId='${f.id}'; app.navigate('messages')" class="fb-btn-secondary py-0.5 px-1.5 text-[10px]">Message</button>
+                              <button onclick="app.removeFriend('${active.id}', '${f.id}')" class="fb-btn-secondary py-0.5 px-1.5 text-[10px] text-red-700">Retirer</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    `).join("")}
+                  </div>`
+              }
+            </div>
+
+            <!-- Annuaire complet des personnages RP -->
+            <div class="pt-2 border-t border-gray-200">
+              <div class="font-bold text-[12px] text-gray-700 mb-2">Tous les personnages et membres sur Фрайсбук (${allPeople.length})</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                ${allPeople.map(p => {
+                  const isFr = this.areFriends(active.id, p.id);
+                  const isOut = outgoing.find(r => r.toId === p.id);
+                  const isIn = incoming.find(r => r.fromId === p.id);
+                  return `
+                    <div class="flex items-center justify-between p-2 border border-gray-200 rounded-[2px] hover:bg-gray-50">
+                      <div class="flex items-center gap-2 min-w-0">
+                        <img src="${p.avatar}" class="w-11 h-11 rounded-[2px] object-cover cursor-pointer" onclick="app.navigate('profile', '${p.id}')" />
+                        <div class="min-w-0">
+                          <div class="fb-link text-[12px] truncate" onclick="app.navigate('profile', '${p.id}')">${this.escapeHtml(p.displayName)}</div>
+                          <div class="text-[10px] text-gray-500 truncate">${this.escapeHtml(p.city || "Personnage RP")}</div>
+                        </div>
+                      </div>
+                      <div class="shrink-0">
+                        ${isFr ? `<span class="text-[10px] text-green-700 font-bold"><i class="fas fa-check"></i> Amis</span>`
+                          : isOut ? `<button onclick="app.cancelFriendRequest('${isOut.id}')" class="fb-btn-secondary text-[10px] py-0.5 px-2">Annuler</button>`
+                          : isIn ? `<button onclick="app.acceptFriendRequest('${isIn.id}')" class="fb-btn-primary text-[10px] py-0.5 px-2">Accepter</button>`
+                          : `<button onclick="app.sendFriendRequest('${active.id}', '${p.id}')" class="fb-btn-primary text-[10px] py-0.5 px-2"><i class="fas fa-user-plus"></i> Ajouter</button>`
+                        }
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+          </div>
+        `;
+      },
+
+      // ======================================================================
+      // VUE 3 : MESSAGERIE PRIVÉE ENTRE PERSONNAGES
+      // ======================================================================
+      renderMessagesView() {
+        const active = this.getActiveEntity();
+        const contacts = this.getAllIdentities().filter(i => i.id !== active.id);
+        if (!this.activeChatPartnerId || this.activeChatPartnerId === active.id) {
+          this.activeChatPartnerId = contacts[0]?.id || null;
+        }
+
+        const partner = this.activeChatPartnerId ? this.getEntityById(this.activeChatPartnerId) : null;
+        const thread = partner
+          ? this.state.messages.filter(
+              m => (m.fromId === active.id && m.toId === partner.id) || (m.fromId === partner.id && m.toId === active.id)
+            ).sort((a, b) => a.createdAt - b.createdAt)
+          : [];
+
+        // Marquer comme lus les messages reçus dans cette conversation
+        let updatedRead = false;
+        thread.forEach(m => {
+          if (m.toId === active.id && !m.read) {
+            m.read = true;
+            updatedRead = true;
+          }
+        });
+        if (updatedRead) {
+          this.saveState();
+          const unreadCount = this.state.messages.filter(m => m.toId === active.id && !m.read).length;
+          this.updateBadge("badge-messages", unreadCount);
+        }
+
+        return `
+          <div class="fb-card overflow-hidden">
+            <div class="fb-box-header flex items-center justify-between">
+              <span><i class="fas fa-envelope text-[#3b5998] mr-1.5"></i>Messagerie privée — Connecté en tant que <b>${this.escapeHtml(active.displayName)}</b></span>
+              <span class="text-[10px] text-gray-500">Changez d'identité en haut à droite pour incarner un autre personnage</span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row min-h-[420px]">
+              <!-- Liste des contacts RP -->
+              <div class="w-full sm:w-[210px] border-b sm:border-b-0 sm:border-r border-gray-200 bg-[#f7f8fa] divide-y divide-gray-200">
+                ${contacts.map(c => {
+                  const unreadFromC = this.state.messages.filter(m => m.fromId === c.id && m.toId === active.id && !m.read).length;
+                  const isSelected = partner && partner.id === c.id;
+                  return `
+                    <div onclick="app.activeChatPartnerId='${c.id}'; app.renderAll()"
+                         class="p-2 flex items-center gap-2 cursor-pointer ${isSelected ? 'bg-[#d8dfea] font-bold' : 'hover:bg-gray-100'}">
+                      <img src="${c.avatar}" class="w-9 h-9 rounded-[2px] object-cover shrink-0" />
+                      <div class="min-w-0 flex-1">
+                        <div class="text-[11px] truncate text-gray-900">${this.escapeHtml(c.name)}</div>
+                        <div class="text-[9px] text-gray-500">${c.label}</div>
+                      </div>
+                      ${unreadFromC > 0 ? `<span class="bg-[#f03d25] text-white text-[10px] px-1.5 rounded font-bold">${unreadFromC}</span>` : ""}
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+
+              <!-- Fil de discussion -->
+              <div class="flex-1 flex flex-col justify-between bg-white">
+                ${partner ? `
+                  <div class="px-3 py-2 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+                    <div class="flex items-center gap-2">
+                      <img src="${partner.avatar}" class="w-7 h-7 rounded-[2px] object-cover" />
+                      <span class="fb-link text-[12px]" onclick="app.navigate('profile', '${partner.id}')">${this.escapeHtml(partner.displayName)}</span>
+                    </div>
+                    <button onclick="app.setActiveIdentity('${partner.id}')" class="fb-btn-secondary text-[10px] py-0.5">
+                      <i class="fas fa-exchange-alt"></i> Répondre en tant que ${this.escapeHtml(partner.displayName)}
+                    </button>
+                  </div>
+
+                  <div class="p-3 space-y-2.5 overflow-y-auto max-h-[300px] flex-1">
+                    ${thread.length === 0
+                      ? `<div class="text-center text-gray-400 py-10 text-[11px]">Aucun message échangé avec ${this.escapeHtml(partner.displayName)}. Démarrez la conversation !</div>`
+                      : thread.map(m => {
+                          const sender = this.getEntityById(m.fromId);
+                          const isMine = m.fromId === active.id;
+                          return `
+                            <div class="flex items-start gap-2 ${isMine ? 'bg-[#f2f4f8] p-2 rounded' : 'p-1'}">
+                              <img src="${sender ? sender.avatar : FALLBACK_AVATAR}" class="w-8 h-8 rounded-[2px] object-cover shrink-0" />
+                              <div class="flex-1 min-w-0">
+                                <div class="flex justify-between items-center">
+                                  <span class="font-bold text-[11px] text-[#3b5998]">${sender ? this.escapeHtml(sender.displayName) : "Membre"}</span>
+                                  <span class="text-[9px] text-gray-400">${this.formatTime(m.createdAt)}</span>
+                                </div>
+                                <div class="text-[12px] text-gray-800 whitespace-pre-line mt-0.5">${this.escapeHtml(m.text)}</div>
+                              </div>
+                            </div>
+                          `;
+                        }).join("")
+                    }
+                  </div>
+
+                  <div class="p-2.5 border-t border-gray-200 bg-[#f7f8fa] flex gap-2">
+                    <input type="text" id="chat-msg-input" class="fb-input" placeholder="Écrire un message à ${this.escapeHtml(partner.displayName)}..."
+                           onkeydown="if(event.key==='Enter') app.sendPrivateMessage('${partner.id}')" />
+                    <button onclick="app.sendPrivateMessage('${partner.id}')" class="fb-btn-primary shrink-0">Envoyer</button>
+                  </div>
+                ` : `<div class="p-6 text-center text-gray-500">Sélectionnez un personnage à gauche.</div>`}
+              </div>
+            </div>
+          </div>
+        `;
+      },
+
+      sendPrivateMessage(toId) {
+        const input = document.getElementById("chat-msg-input");
+        if (!input) return;
+        const text = input.value.trim();
+        if (!text) return;
+        const active = this.getActiveEntity();
+
+        this.state.messages.push({
+          id: "msg_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5),
+          fromId: active.id,
+          toId,
+          text,
+          read: false,
+          createdAt: Date.now()
+        });
+
+        this.saveState();
+        this.renderAll();
+      },
+
+      // ======================================================================
+      // VUE 4 : PAGES FACEBOOK (RÉPERTOIRE, LIKES, BOUTON CRAYON ✏️, JEUX LIÉS)
+      // ======================================================================
+      toggleLikePage(pageId) {
+        const page = this.state.pages.find(p => p.id === pageId);
+        if (!page) return;
+        if (!Array.isArray(page.likes)) page.likes = [];
+        const active = this.getActiveEntity();
+        const idx = page.likes.indexOf(active.id);
+        if (idx === -1) {
+          page.likes.push(active.id);
+          this.toast(`${active.displayName} aime désormais la page « ${page.name} ».`, "success");
+        } else {
+          page.likes.splice(idx, 1);
+          this.toast(`${active.displayName} n'aime plus « ${page.name} ».`, "info");
+        }
+        this.saveState();
+        this.renderAll();
+      },
+
+      renderPagesView() {
+        const active = this.getActiveEntity();
+        const categories = ["ALL", ...new Set(this.state.pages.map(p => p.category).filter(Boolean))];
+        const filtered = this.pagesCategoryFilter === "ALL"
+          ? this.state.pages
+          : this.state.pages.filter(p => p.category === this.pagesCategoryFilter);
+
+        return `
+          <div class="fb-card p-3 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-2">
+              <div>
+                <h2 class="text-[15px] font-bold text-[#3b5998] m-0">
+                  <i class="fas fa-flag text-orange-600 mr-1.5"></i>Pages Facebook sur Фрайсбук
+                </h2>
+                <div class="text-[11px] text-gray-500">Créez des pages communautaires, marques RP ou pages officielles de jeux GameRoom.</div>
+              </div>
+              <button onclick="app.navigate('settings', 'pages')" class="fb-btn-primary">
+                <i class="fas fa-plus"></i> Créer une Page Facebook
+              </button>
+            </div>
+
+            <!-- Filtres par catégorie -->
+            <div class="flex flex-wrap gap-1.5 items-center">
+              <span class="text-[11px] text-gray-500 font-bold">Catégorie :</span>
+              ${categories.map(cat => `
+                <button onclick="app.pagesCategoryFilter='${this.escapeHtml(cat)}'; app.renderAll()"
+                        class="${this.pagesCategoryFilter === cat ? 'fb-btn-primary' : 'fb-btn-secondary'} text-[10px] py-0.5 px-2">
+                  ${cat === "ALL" ? "Toutes (" + this.state.pages.length + ")" : this.escapeHtml(cat)}
+                </button>
+              `).join("")}
+            </div>
+
+            <!-- Grille des pages -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              ${filtered.length === 0
+                ? `<div class="col-span-2 text-center text-gray-500 py-6">Aucune page créée dans cette catégorie.</div>`
+                : filtered.map(p => {
+                    const liked = (p.likes || []).includes(active.id);
+                    const linkedGame = p.isGamePage ? this.state.games.find(g => g.id === p.gameId || g.pageId === p.id) : null;
+                    return `
+                      <div class="fb-card overflow-hidden flex flex-col justify-between">
+                        <div>
+                          <div class="h-[80px] bg-cover bg-center relative" style="background-image:url('${this.escapeHtml(p.cover || FALLBACK_COVER)}')">
+                            <button onclick="app.openIdentityComposerModal('${p.id}')"
+                                    title="Publier directement en tant que ${this.escapeHtml(p.name)}"
+                                    class="absolute top-1.5 right-1.5 bg-white/95 hover:bg-white text-[#3b5998] border border-gray-400 px-2 py-0.5 rounded-[2px] text-[10px] font-bold shadow cursor-pointer">
+                              <i class="fas fa-pencil-alt"></i> Publier
+                            </button>
+                          </div>
+                          <div class="p-2.5 pt-2 flex gap-2.5 items-start">
+                            <img src="${this.escapeHtml(p.avatar || FALLBACK_AVATAR)}" onerror="this.src='${FALLBACK_AVATAR}'"
+                                 class="w-12 h-12 rounded-[2px] object-cover border border-gray-300 -mt-6 bg-white relative z-10 cursor-pointer"
+                                 onclick="app.navigate('profile', '${p.id}')" />
+                            <div class="min-w-0 flex-1">
+                              <div class="fb-link text-[13px] truncate" onclick="app.navigate('profile', '${p.id}')">${this.escapeHtml(p.name)}</div>
+                              <div class="text-[10px] text-gray-500">${this.escapeHtml(p.category)} · ${(p.likes || []).length} J'aime</div>
+                            </div>
+                          </div>
+                          <p class="px-2.5 text-[11px] text-gray-700 line-clamp-2 mb-2">${this.escapeHtml(p.description)}</p>
+                        </div>
+
+                        <div class="px-2.5 py-2 bg-[#f7f8fa] border-t border-gray-200 flex items-center justify-between gap-1.5">
+                          <button onclick="app.toggleLikePage('${p.id}')" class="${liked ? 'fb-btn-secondary' : 'fb-btn-primary'} text-[10px] py-1">
+                            <i class="fas fa-thumbs-up"></i> ${liked ? "Aimée ✓" : "J'aime"}
+                          </button>
+                          <div class="flex gap-1">
+                            ${linkedGame ? `
+                              <button onclick="app.launchGame('${linkedGame.id}')" class="fb-btn-green text-[10px] py-1">
+                                <i class="fas fa-play"></i> Jouer
+                              </button>
+                            ` : ""}
+                            <button onclick="app.navigate('profile', '${p.id}')" class="fb-btn-secondary text-[10px] py-1">Voir la page</button>
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                  }).join("")
+              }
+            </div>
+          </div>
+        `;
+      },
+
+      // ======================================================================
+      // VUE 5 : GAMEROOM (PORTAIL DE JEUX FACEBOOK 2010–2012 + LECTEUR SANDBOX)
+      // ======================================================================
+      renderGameRoomView() {
+        return `
+          <div class="fb-card overflow-hidden">
+            <!-- Bannière GameRoom style Facebook Apps & Games 2010 -->
+            <div class="bg-gradient-to-r from-[#29447e] via-[#3b5998] to-[#4c69ba] text-white p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-gamepad text-[22px] text-yellow-300"></i>
+                  <h2 class="text-[17px] font-bold m-0">Фрайсбук GameRoom — Centre de Jeux</h2>
+                </div>
+                <p class="text-[11px] text-blue-100 mt-1 mb-0">
+                  Jouez directement dans votre navigateur aux jeux intégrés en HTML ou IFRAME. Chaque jeu possède sa propre Page Facebook officielle !
+                </p>
+              </div>
+              <button onclick="app.navigate('settings', 'games')" class="fb-btn-green shrink-0 py-1.5 px-3">
+                <i class="fas fa-plus-circle"></i> Ajouter un jeu
+              </button>
+            </div>
+
+            <!-- Grille de jeux -->
+            <div class="p-3">
+              ${this.state.games.length === 0
+                ? `<div class="text-center py-10 text-gray-500">
+                    Aucun jeu installé dans GameRoom. Cliquez sur « Ajouter un jeu » pour intégrer un jeu HTML ou IFRAME !
+                  </div>`
+                : `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    ${this.state.games.map(g => {
+                      const page = this.state.pages.find(p => p.id === g.pageId || p.gameId === g.id);
+                      return `
+                        <div class="fb-card overflow-hidden flex flex-col justify-between hover:border-[#3b5998] transition-colors">
+                          <div>
+                            <div class="h-[115px] bg-gray-900 bg-cover bg-center relative cursor-pointer group"
+                                 style="background-image:url('${this.escapeHtml(g.image || FALLBACK_COVER)}')"
+                                 onclick="app.launchGame('${g.id}')">
+                              <div class="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition flex items-center justify-center">
+                                <span class="bg-[#67a54b] text-white font-bold px-3 py-1 rounded-[2px] border border-[#3b6e22] shadow-lg text-[12px]">
+                                  <i class="fas fa-play mr-1"></i>Lancer le jeu
+                                </span>
+                              </div>
+                              <span class="absolute top-2 left-2 bg-black/70 text-white text-[9px] px-1.5 py-0.5 rounded uppercase font-bold">
+                                ${g.integrationType === "html" ? "HTML5 Sandbox" : "IFRAME"}
+                              </span>
+                            </div>
+
+                            <div class="p-3">
+                              <div class="flex items-center gap-2 mb-1.5">
+                                <img src="${this.escapeHtml(g.icon || FALLBACK_AVATAR)}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-7 h-7 rounded-[2px] object-cover border border-gray-300" />
+                                <h3 class="font-bold text-[13px] text-[#3b5998] m-0 cursor-pointer hover:underline" onclick="app.launchGame('${g.id}')">
+                                  ${this.escapeHtml(g.name)}
+                                </h3>
+                              </div>
+                              <p class="text-[11px] text-gray-600 m-0 line-clamp-2">${this.escapeHtml(g.description)}</p>
+                            </div>
+                          </div>
+
+                          <div class="px-3 py-2 bg-[#f7f8fa] border-t border-gray-200 flex items-center justify-between gap-2">
+                            ${page ? `
+                              <button onclick="app.navigate('profile', '${page.id}')" class="fb-btn-secondary text-[10px] py-1">
+                                <i class="fas fa-flag text-orange-600"></i> Page officielle
+                              </button>
+                            ` : `<span></span>`}
+                            <button onclick="app.launchGame('${g.id}')" class="fb-btn-green text-[11px] py-1 px-3">
+                              <i class="fas fa-gamepad"></i> Jouer maintenant
+                            </button>
+                          </div>
+                        </div>
+                      `;
+                    }).join("")}
+                  </div>`
+              }
+            </div>
+          </div>
+        `;
+      },
+
+      /**
+       * Ouverture d'un jeu en pleine zone sous la barre bleue Фрайсбук (Mode Canvas Facebook 2010–2012)
+       * Optimisé pour les codes HTML directs (srcdoc) ET les URLs / balises IFRAME externes
+       */
+      launchGame(gameId) {
+        const game = this.state.games.find(g => g.id === gameId);
+        if (!game) {
+          this.toast("Jeu introuvable.", "error");
+          return;
+        }
+        this.activeCanvasGameId = game.id;
+        const active = this.getActiveEntity();
+
+        const canvasView = document.getElementById("gameroom-canvas-view");
+        document.getElementById("canvas-game-icon").src = game.icon || FALLBACK_AVATAR;
+        document.getElementById("canvas-game-title").textContent = game.name;
+        document.getElementById("canvas-game-mode-badge").textContent =
+          game.integrationType === "html" ? "HTML5 Intégré" : "IFRAME Pleine Page";
+
+        const page = this.state.pages.find(p => p.id === game.pageId || p.gameId === game.id);
+        const pageBtn = document.getElementById("canvas-view-page-btn");
+        if (page) {
+          pageBtn.classList.remove("hidden");
+          pageBtn.onclick = () => {
+            this.closeGamePlayer(false);
+            this.navigate("profile", page.id);
+          };
+        } else {
+          pageBtn.classList.add("hidden");
+        }
+
+        document.getElementById("canvas-share-btn").onclick = () => {
+          this.state.posts.unshift({
+            id: "post_" + Date.now(),
+            authorId: active.id,
+            wallOwnerId: active.id,
+            content: `Je joue actuellement à « ${game.name} » sur Фрайсбук GameRoom ! Rejoignez-moi 🎮`,
+            image: "",
+            feeling: "en pleine partie",
+            likes: [],
+            comments: [],
+            sharedFrom: null,
+            createdAt: Date.now()
+          });
+          this.saveState();
+          this.toast(`Statut de jeu publié sur le mur de ${active.displayName} !`, "success");
+          this.renderTopBarAndSidebars();
+        };
+
+        const container = document.getElementById("canvas-iframe-container");
+        const helperBar = document.getElementById("canvas-iframe-helper-bar");
+        const popupBtn = document.getElementById("canvas-popup-btn");
+        container.innerHTML = "";
+        helperBar.classList.add("hidden");
+        popupBtn.classList.add("hidden");
+
+        const iframe = document.createElement("iframe");
+        iframe.id = "active-game-iframe";
+        iframe.className = "w-full h-full border-0 block bg-white";
+        iframe.setAttribute("allow", "autoplay; fullscreen; gamepad; accelerometer; gyroscope; clipboard-read; clipboard-write; web-share");
+        iframe.setAttribute("allowfullscreen", "true");
+
+        if (game.integrationType === "html") {
+          // Option A : Code HTML direct exécuté dans une sandbox isolée mais fonctionnelle
+          iframe.setAttribute("sandbox", "allow-scripts allow-forms allow-pointer-lock allow-popups allow-modals");
+          iframe.srcdoc = game.htmlCode || "<body style='font-family:sans-serif;padding:24px;'>Aucun code HTML défini pour ce jeu.</body>";
+          container.appendChild(iframe);
+        } else {
+          // Option B : IFRAME externe sans sandbox restrictif afin d'autoriser les moteurs WebGL / stockage / cookies tiers des jeux web
+          const resolvedUrl = this.extractIframeUrl(game.iframeCode || game.url || "");
+          if (this.isValidUrl(resolvedUrl)) {
+            iframe.setAttribute("referrerpolicy", "no-referrer");
+            iframe.src = resolvedUrl;
+            container.appendChild(iframe);
+
+            // Afficher le bandeau d'aide et le bouton d'ouverture dédiée si le site distant bloque l'iframe
+            helperBar.classList.remove("hidden");
+            popupBtn.classList.remove("hidden");
+            const openDedicated = () => {
+              window.open(resolvedUrl, "_blank", "noopener,noreferrer");
+            };
+            popupBtn.onclick = openDedicated;
+            document.getElementById("canvas-helper-open-btn").onclick = openDedicated;
+          } else {
+            container.innerHTML = `
+              <div class="w-full h-full flex items-center justify-center bg-[#141823] p-4">
+                <div class="bg-white p-6 rounded-[3px] max-w-md text-center text-gray-800 border-2 border-[#3b5998] shadow-xl">
+                  <i class="fas fa-exclamation-triangle text-red-600 text-3xl mb-2"></i>
+                  <div class="font-bold text-[14px] mb-1">URL ou balise IFRAME invalide</div>
+                  <p class="text-[11px] text-gray-600 mb-4">
+                    L'adresse fournie (« ${this.escapeHtml(resolvedUrl || "vide")} ») n'est pas valide. Vérifiez qu'elle contient un lien <b>https://</b> valide dans <b>Paramètres &gt; Gestion des jeux Facebook</b>.
+                  </p>
+                  <button onclick="app.closeGamePlayer(false); app.navigate('settings', 'games')" class="fb-btn-primary">
+                    Modifier la configuration du jeu
+                  </button>
+                </div>
+              </div>
+            `;
+          }
+        }
+
+        // Masquer le défilement de la page arrière-plan et afficher le Canvas pleine page
+        document.body.style.overflow = "hidden";
+        canvasView.classList.remove("hidden");
+      },
+
+      reloadCanvasGame() {
+        if (this.activeCanvasGameId) {
+          this.launchGame(this.activeCanvasGameId);
+        }
+      },
+
+      toggleCanvasFullscreen() {
+        const el = document.getElementById("gameroom-canvas-view");
+        if (!document.fullscreenElement) {
+          if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+        } else {
+          if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+        }
+      },
+
+      closeGamePlayer(reRender = true) {
+        if (document.fullscreenElement && document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        }
+        this.activeCanvasGameId = null;
+        document.body.style.overflow = "";
+        document.getElementById("canvas-iframe-container").innerHTML = "";
+        document.getElementById("gameroom-canvas-view").classList.add("hidden");
+        if (reRender) {
+          this.renderAll();
+        }
+      },
+
+      saveInternalBackups(list) {
+        try {
+          localStorage.setItem(this.BACKUPS_KEY, JSON.stringify(list));
+        } catch {
+          this.toast("Espace navigateur limité : téléchargez plutôt votre sauvegarde en fichier JSON.", "error");
+        }
+      },
+
+      getInternalBackups() {
+        try {
+          const raw = localStorage.getItem(this.BACKUPS_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) return parsed;
+          }
+        } catch {}
+        return [];
+      },
+
+      buildExportPayload() {
+        return {
+          schemaVersion: "1.0",
+          appName: "Fraisebook",
+          cyrillicName: "Фрайсбук",
+          exportedAt: new Date().toISOString(),
+          summary: {
+            charactersCount: this.state.characters.length,
+            pagesCount: this.state.pages.length,
+            gamesCount: this.state.games.length,
+            postsCount: this.state.posts.length,
+            messagesCount: this.state.messages.length,
+            friendshipsCount: this.state.friendships.length
+          },
+          data: JSON.parse(JSON.stringify(this.state))
+        };
+      },
+
+      createInternalBackup() {
+        const list = this.getInternalBackups();
+        const payload = this.buildExportPayload();
+        const jsonStr = JSON.stringify(payload);
+        list.unshift({
+          id: "bkp_" + Date.now(),
+          createdAt: Date.now(),
+          sizeKB: Math.max(1, Math.round(jsonStr.length / 1024)),
+          summary: payload.summary,
+          payload
+        });
+        if (list.length > 5) list.pop();
+        this.saveInternalBackups(list);
+        this.toast("Sauvegarde interne créée avec succès !", "success");
+        this.renderAll();
+      },
+
+      downloadBackupFile() {
+        const payload = this.buildExportPayload();
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+        const dlAnchor = document.createElement("a");
+        dlAnchor.setAttribute("href", dataStr);
+        dlAnchor.setAttribute("download", `fraisebook_backup_${new Date().toISOString().slice(0,10)}.json`);
+        document.body.appendChild(dlAnchor);
+        dlAnchor.click();
+        dlAnchor.remove();
+        this.toast("Fichier de sauvegarde téléchargé avec succès !", "success");
+      },
+
+      restoreInternalBackup(backupId) {
+        const list = this.getInternalBackups();
+        const found = list.find(b => b.id === backupId);
+        if (!found || !found.payload) return;
+        this.openConfirmModal(
+          "Restaurer cette sauvegarde ?",
+          "Cette action remplacera l'état actuel de votre réseau Фрайсбук par les données de cet instantané.",
+          () => {
+            this.state = JSON.parse(JSON.stringify(found.payload.data));
+            this.saveState();
+            this.applyTheme();
+            this.toast("Sauvegarde restaurée avec succès !", "success");
+            this.renderAll();
+          }
+        );
+      },
+
+      deleteInternalBackup(backupId) {
+        const list = this.getInternalBackups().filter(b => b.id !== backupId);
+        this.saveInternalBackups(list);
+        this.toast("Sauvegarde supprimée.", "info");
+        this.renderAll();
+      },
+
+      handleImportFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const parsed = JSON.parse(e.target.result);
+            if (!parsed || parsed.appName !== "Fraisebook" || !parsed.data || !parsed.data.mainUser) {
+              this.toast("Fichier invalide : ce fichier n'est pas une sauvegarde Фрайсбук (Fraisebook) reconnue.", "error");
+              return;
+            }
+            this.pendingImportData = parsed;
+            this.renderAll();
+          } catch {
+            this.toast("Erreur de lecture JSON : le fichier sélectionné est corrompu.", "error");
+          }
+        };
+        reader.readAsText(file);
+      },
+
+      confirmImportBackup() {
+        if (!this.pendingImportData || !this.pendingImportData.data) return;
+        const imported = JSON.parse(JSON.stringify(this.pendingImportData.data));
+        imported.characters = Array.isArray(imported.characters) ? imported.characters : [];
+        imported.pages = Array.isArray(imported.pages) ? imported.pages : [];
+        imported.games = Array.isArray(imported.games) ? imported.games : [];
+        imported.posts = Array.isArray(imported.posts) ? imported.posts : [];
+        imported.messages = Array.isArray(imported.messages) ? imported.messages : [];
+        imported.friendships = Array.isArray(imported.friendships) ? imported.friendships : [];
+        imported.friendRequests = Array.isArray(imported.friendRequests) ? imported.friendRequests : [];
+        imported.notifications = Array.isArray(imported.notifications) ? imported.notifications : [];
+        imported.settings = imported.settings || createEmptyState().settings;
+        imported.isInitialized = true;
+
+        this.state = imported;
+        this.pendingImportData = null;
+        this.saveState();
+        this.applyTheme();
+        this.toast("Importation terminée ! Tout votre univers RP Фрайсбук a été reconstruit.", "success");
+        this.renderAll();
+      },
+
+      resetAllData() {
+        this.openConfirmModal(
+          "Réinitialiser toutes les données ?",
+          "Attention : cette action effacera intégralement votre compte, vos personnages, pages, publications et jeux pour revenir à l'écran d'inscription vierge de Фрайсбук.",
+          () => {
+            localStorage.removeItem(this.STORAGE_KEY);
+            this.state = createEmptyState(null);
+            this.applyTheme();
+            this.toast("Réseau social réinitialisé à l'état vierge.", "info");
+            this.renderAll();
+          }
+        );
+      },
+
+      // ======================================================================
+      // VUE 6 : PARAMÈTRES ET GESTION COMPLÈTE
+      // ======================================================================
+      editingCharId: null,
+      editingPageId: null,
+      editingGameId: null,
+
+      renderSettingsView(sub = "general") {
+        return `
+          <div class="fb-card p-3 space-y-4">
+            <div class="border-b pb-2">
+              <h2 class="text-[15px] font-bold text-[#3b5998] m-0">
+                <i class="fas fa-cog mr-1.5"></i>Paramètres et Gestion de Фрайсбук
+              </h2>
+              <div class="text-[11px] text-gray-500">Gérez vos personnages RP, vos pages, vos jeux et effectuez vos sauvegardes JSON.</div>
+            </div>
+
+            <!-- Sous-onglets des paramètres -->
+            <div class="flex flex-wrap gap-1 border-b border-gray-200 pb-2">
+              <button onclick="app.navigate('settings', 'general')" class="${sub === 'general' ? 'fb-btn-primary' : 'fb-btn-secondary'} text-[11px] py-1">Général</button>
+              <button onclick="app.navigate('settings', 'characters')" class="${sub === 'characters' ? 'fb-btn-primary' : 'fb-btn-secondary'} text-[11px] py-1">Personnages RP</button>
+              <button onclick="app.navigate('settings', 'pages')" class="${sub === 'pages' ? 'fb-btn-primary' : 'fb-btn-secondary'} text-[11px] py-1">Pages Facebook</button>
+              <button onclick="app.navigate('settings', 'games')" class="${sub === 'games' ? 'fb-btn-primary' : 'fb-btn-secondary'} text-[11px] py-1">Jeux Facebook</button>
+              <button onclick="app.navigate('settings', 'backup')" class="${sub === 'backup' ? 'fb-btn-primary' : 'fb-btn-secondary'} text-[11px] py-1">Sauvegarde et transfert</button>
+            </div>
+
+            <!-- Contenu selon le sous-onglet -->
+            ${sub === 'general' ? this.renderSettingsGeneralTab() :
+              sub === 'characters' ? this.renderSettingsCharactersTab() :
+              sub === 'pages' ? this.renderSettingsPagesTab() :
+              sub === 'games' ? this.renderSettingsGamesTab() :
+              this.renderSettingsBackupTab()}
+          </div>
+        `;
+      },
+
+      renderSettingsGeneralTab() {
+        const s = this.state.settings;
+        return `
+          <div class="space-y-3 text-[12px]">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+              <label class="font-bold text-gray-700">Nom du réseau social :</label>
+              <input type="text" id="set_siteName" value="${this.escapeHtml(s.siteName)}" class="fb-input sm:col-span-2" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+              <label class="font-bold text-gray-700">Apparence visuelle :</label>
+              <select id="set_theme" class="fb-select sm:col-span-2">
+                <option value="theme-classic-2010" ${s.theme === 'theme-classic-2010' ? 'selected' : ''}>Classique Facebook (2009-2012) - Bleu standard</option>
+                <option value="theme-royal-2009" ${s.theme === 'theme-royal-2009' ? 'selected' : ''}>Royal Blue (2009) - Bleu sombre</option>
+                <option value="theme-fraise-retro" ${s.theme === 'theme-fraise-retro' ? 'selected' : ''}>Fraise Retro - Teinte bordeaux / rose</option>
+              </select>
+            </div>
+            <div class="pt-2 flex justify-end gap-2">
+              <button onclick="app.saveSettingsGeneral()" class="fb-btn-primary">Enregistrer les paramètres</button>
+            </div>
+          </div>
+        `;
+      },
+
+      saveSettingsGeneral() {
+        const name = document.getElementById("set_siteName").value.trim();
+        const theme = document.getElementById("set_theme").value;
+        if (name) this.state.settings.siteName = name;
+        this.state.settings.theme = theme;
+        this.saveState();
+        this.applyTheme();
+        this.toast("Paramètres généraux enregistrés !", "success");
+        this.renderAll();
+      },
+
+      renderSettingsCharactersTab() {
+        const editing = this.state.characters.find(c => c.id === this.editingCharId);
+        return `
+          <div class="space-y-4">
+            <!-- Formulaire de création / édition de personnage -->
+            <div class="bg-[#f2f4f8] border border-[#d8dfea] p-3 rounded-[2px]">
+              <h3 class="font-bold text-[13px] text-[#3b5998] m-0 mb-2">
+                ${editing ? `Modifier le personnage : ${this.escapeHtml(editing.firstName + " " + editing.lastName)}` : "Créer un nouveau personnage RP"}
+              </h3>
+              <div class="space-y-2.5 text-[12px]">
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Prénom *</label>
+                    <input type="text" id="char_firstName" value="${editing ? this.escapeHtml(editing.firstName) : ""}" class="fb-input" placeholder="Ex: Ivan" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Nom *</label>
+                    <input type="text" id="char_lastName" value="${editing ? this.escapeHtml(editing.lastName) : ""}" class="fb-input" placeholder="Ex: Petrov" />
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Date de naissance</label>
+                    <input type="date" id="char_birthDate" value="${editing ? editing.birthDate || "" : ""}" class="fb-input" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Ville</label>
+                    <input type="text" id="char_city" value="${editing ? this.escapeHtml(editing.city || "") : ""}" class="fb-input" placeholder="Ex: Saint-Pétersbourg" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block font-bold text-gray-700 mb-0.5">Photo de profil</label>
+                  <input type="text" id="char_avatar" value="${editing && !String(editing.avatar || "").startsWith("data:image/") ? this.escapeHtml(editing.avatar || "") : ""}" class="fb-input mb-1" placeholder="URL d'image (facultatif)" />
+                  <input type="file" id="char_avatar_file" accept="image/*" class="fb-input" />
+                </div>
+                <div>
+                  <label class="block font-bold text-gray-700 mb-0.5">Photo de couverture</label>
+                  <input type="text" id="char_cover" value="${editing && !String(editing.cover || "").startsWith("data:image/") ? this.escapeHtml(editing.cover || "") : ""}" class="fb-input mb-1" placeholder="URL d'image (facultatif)" />
+                  <input type="file" id="char_cover_file" accept="image/*" class="fb-input" />
+                </div>
+                <div>
+                  <label class="block font-bold text-gray-700 mb-0.5">Statut actuel</label>
+                  <input type="text" id="char_status" value="${editing ? this.escapeHtml(editing.status || "") : ""}" class="fb-input" placeholder="Ex: En plein entraînement de chess..." />
+                </div>
+                <div>
+                  <label class="block font-bold text-gray-700 mb-0.5">Biographie / Description</label>
+                  <textarea id="char_bio" rows="2" class="fb-textarea" placeholder="Histoire du personnage...">${editing ? this.escapeHtml(editing.bio || "") : ""}</textarea>
+                </div>
+                <div class="flex gap-2 pt-1">
+                  <button onclick="app.saveCharacter()" class="fb-btn-primary">${editing ? "Mettre à jour le personnage" : "Créer le personnage"}</button>
+                  ${editing ? `<button onclick="app.editingCharId=null; app.renderAll()" class="fb-btn-secondary">Annuler</button>` : ""}
+                </div>
+              </div>
+            </div>
+
+            <!-- Liste des personnages existants -->
+            <div>
+              <h3 class="font-bold text-[12px] text-gray-700 mb-2">Personnages RP existants (${this.state.characters.length})</h3>
+              <div class="space-y-2">
+                ${this.state.characters.length === 0
+                  ? `<div class="text-[11px] text-gray-500 bg-gray-50 p-3 rounded border border-gray-200">Aucun personnage créé pour l'instant.</div>`
+                  : this.state.characters.map(c => `
+                    <div class="flex items-center justify-between p-2.5 border border-gray-200 rounded-[2px] bg-white">
+                      <div class="flex items-center gap-2.5 min-w-0">
+                        <img src="${c.avatar}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-11 h-11 rounded-[2px] object-cover cursor-pointer" onclick="app.navigate('profile', '${c.id}')" />
+                        <div class="min-w-0">
+                          <div class="fb-link text-[12px] truncate" onclick="app.navigate('profile', '${c.id}')">${this.escapeHtml(c.firstName + " " + c.lastName)}</div>
+                          <div class="text-[10px] text-gray-500 truncate">${this.escapeHtml(c.city || "Personnage RP")}</div>
+                        </div>
+                      </div>
+                      <div class="flex gap-1.5 shrink-0">
+                        <button onclick="app.setActiveIdentity('${c.id}')" class="fb-btn-secondary text-[10px] py-1">Incarner</button>
+                        <button onclick="app.editingCharId='${c.id}'; app.renderAll()" class="fb-btn-secondary text-[10px] py-1"><i class="fas fa-edit"></i></button>
+                        <button onclick="app.deleteCharacter('${c.id}')" class="fb-btn-danger text-[10px] py-1"><i class="fas fa-trash"></i></button>
+                      </div>
+                    </div>
+                  `).join("")
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      },
+
+      async saveCharacter() {
+        const firstName = (document.getElementById("char_firstName").value || "").trim();
+        const lastName = (document.getElementById("char_lastName").value || "").trim();
+        if (!firstName || !lastName) {
+          this.toast("Le prénom et le nom du personnage sont obligatoires.", "error");
+          return;
+        }
+        const birthDate = document.getElementById("char_birthDate").value || "";
+        const city = (document.getElementById("char_city").value || "").trim();
+        let avatarInput, coverInput;
+        try {
+          const oldChar = this.editingCharId ? this.state.characters.find(c => c.id === this.editingCharId) : null;
+          avatarInput = await this.readImageChoice("char_avatar_file", "char_avatar", oldChar?.avatar || "");
+          coverInput = await this.readImageChoice("char_cover_file", "char_cover", oldChar?.cover || "");
+        } catch (err) { this.toast(err.message, "error"); return; }
+        const status = (document.getElementById("char_status").value || "").trim();
+        const bio = (document.getElementById("char_bio").value || "").trim();
+
+        const initials = (firstName[0] + lastName[0]).toUpperCase();
+        const avatar = avatarInput || makeSvgAvatar(initials, "#29447e");
+        const cover = coverInput || makeSvgCover(`${firstName} ${lastName} • Фрайсбук`, "#29447e", "#1d2f56");
+
+        if (this.editingCharId) {
+          const char = this.state.characters.find(c => c.id === this.editingCharId);
+          if (char) {
+            char.firstName = firstName;
+            char.lastName = lastName;
+            char.birthDate = birthDate;
+            char.city = city;
+            char.avatar = avatar;
+            char.cover = cover;
+            char.status = status;
+            char.bio = bio;
+          }
+          this.editingCharId = null;
+          this.toast("Personnage mis à jour avec succès !", "success");
+        } else {
+          const newId = "char_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
+          this.state.characters.push({
+            id: newId,
+            type: "character",
+            firstName,
+            lastName,
+            birthDate,
+            city,
+            avatar,
+            cover,
+            status,
+            bio,
+            createdAt: Date.now()
+          });
+          this.toast("Personnage créé avec succès !", "success");
+        }
+        this.saveState();
+        this.renderAll();
+      },
+
+      deleteCharacter(id) {
+        this.openConfirmModal(
+          "Supprimer ce personnage ?",
+          "Toutes les relations d'amitié et publications associées à ce personnage seront retirées.",
+          () => {
+            this.state.characters = this.state.characters.filter(c => c.id !== id);
+            this.state.posts = this.state.posts.filter(p => p.authorId !== id);
+            if (this.state.activeIdentityId === id) {
+              this.state.activeIdentityId = this.state.mainUser.id;
+            }
+            this.saveState();
+            this.toast("Personnage supprimé.", "info");
+            this.renderAll();
+          }
+        );
+      },
+
+      renderSettingsPagesTab() {
+        const editing = this.state.pages.find(p => p.id === this.editingPageId);
+        return `
+          <div class="space-y-4">
+            <div class="bg-[#f2f4f8] border border-[#d8dfea] p-3 rounded-[2px]">
+              <h3 class="font-bold text-[13px] text-[#3b5998] m-0 mb-2">
+                ${editing ? `Modifier la page : ${this.escapeHtml(editing.name)}` : "Créer une nouvelle Page Facebook"}
+              </h3>
+              <div class="space-y-2.5 text-[12px]">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Nom de la page *</label>
+                    <input type="text" id="page_name" value="${editing ? this.escapeHtml(editing.name) : ""}" class="fb-input" placeholder="Ex: Fans de Rétro Gaming" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Catégorie</label>
+                    <input type="text" id="page_category" value="${editing ? this.escapeHtml(editing.category) : ""}" class="fb-input" placeholder="Ex: Divertissement, Jeu, Art..." />
+                  </div>
+                </div>
+                <div>
+                  <label class="block font-bold text-gray-700 mb-0.5">Description de la page</label>
+                  <textarea id="page_description" rows="2" class="fb-textarea" placeholder="De quoi parle cette page...">${editing ? this.escapeHtml(editing.description || "") : ""}</textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Photo de profil</label>
+                    <input type="text" id="page_avatar" value="${editing && !String(editing.avatar || "").startsWith("data:image/") ? this.escapeHtml(editing.avatar || "") : ""}" class="fb-input mb-1" placeholder="URL d'image (facultatif)" />
+                    <input type="file" id="page_avatar_file" accept="image/*" class="fb-input" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Photo de couverture</label>
+                    <input type="text" id="page_cover" value="${editing && !String(editing.cover || "").startsWith("data:image/") ? this.escapeHtml(editing.cover || "") : ""}" class="fb-input mb-1" placeholder="URL d'image (facultatif)" />
+                    <input type="file" id="page_cover_file" accept="image/*" class="fb-input" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block font-bold text-gray-700 mb-0.5">Informations supplémentaires</label>
+                  <input type="text" id="page_extraInfo" value="${editing ? this.escapeHtml(editing.extraInfo || "") : ""}" class="fb-input" placeholder="Lien du site web, contact..." />
+                </div>
+
+                <!-- Case à cocher obligatoire : Page de jeu GameRoom -->
+                <div class="bg-blue-50 border border-blue-200 p-2 rounded-[2px] flex items-center gap-2">
+                  <input type="checkbox" id="page_isGamePage" ${editing && editing.isGamePage ? 'checked' : ''} class="w-4 h-4 text-[#3b5998]" />
+                  <label for="page_isGamePage" class="font-bold text-[12px] text-[#29447e] cursor-pointer">
+                    Cette page est-elle une page de jeu Facebook ? (Associe automatiquement la page au portail GameRoom)
+                  </label>
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                  <button onclick="app.savePage()" class="fb-btn-primary">${editing ? "Mettre à jour la page" : "Créer la page"}</button>
+                  ${editing ? `<button onclick="app.editingPageId=null; app.renderAll()" class="fb-btn-secondary">Annuler</button>` : ""}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-[12px] text-gray-700 mb-2">Pages existantes (${this.state.pages.length})</h3>
+              <div class="space-y-2">
+                ${this.state.pages.length === 0
+                  ? `<div class="text-[11px] text-gray-500 bg-gray-50 p-3 rounded border border-gray-200">Aucune page créée pour l'instant.</div>`
+                  : this.state.pages.map(p => `
+                    <div class="flex items-center justify-between p-2.5 border border-gray-200 rounded-[2px] bg-white">
+                      <div class="flex items-center gap-2.5 min-w-0">
+                        <img src="${p.avatar}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-11 h-11 rounded-[2px] object-cover cursor-pointer" onclick="app.navigate('profile', '${p.id}')" />
+                        <div class="min-w-0">
+                          <div class="fb-link text-[12px] truncate" onclick="app.navigate('profile', '${p.id}')">${this.escapeHtml(p.name)}</div>
+                          <div class="text-[10px] text-gray-500 truncate">${this.escapeHtml(p.category)} · ${(p.likes || []).length} J'aime ${p.isGamePage ? '· 🎮 Jeu GameRoom' : ''}</div>
+                        </div>
+                      </div>
+                      <div class="flex gap-1.5 shrink-0">
+                        <button onclick="app.editingPageId='${p.id}'; app.renderAll()" class="fb-btn-secondary text-[10px] py-1"><i class="fas fa-edit"></i></button>
+                        <button onclick="app.deletePage('${p.id}')" class="fb-btn-danger text-[10px] py-1"><i class="fas fa-trash"></i></button>
+                      </div>
+                    </div>
+                  `).join("")
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      },
+
+      async savePage() {
+        const name = (document.getElementById("page_name").value || "").trim();
+        const category = (document.getElementById("page_category").value || "").trim() || "Communauté";
+        const description = (document.getElementById("page_description").value || "").trim();
+        let avatarInput, coverInput;
+        try {
+          const oldPage = this.editingPageId ? this.state.pages.find(p => p.id === this.editingPageId) : null;
+          avatarInput = await this.readImageChoice("page_avatar_file", "page_avatar", oldPage?.avatar || "");
+          coverInput = await this.readImageChoice("page_cover_file", "page_cover", oldPage?.cover || "");
+        } catch (err) { this.toast(err.message, "error"); return; }
+        const extraInfo = (document.getElementById("page_extraInfo").value || "").trim();
+        const isGamePage = document.getElementById("page_isGamePage").checked;
+
+        if (!name) {
+          this.toast("Le nom de la page est obligatoire.", "error");
+          return;
+        }
+
+        const avatar = avatarInput || makeSvgAvatar(name.slice(0, 2).toUpperCase(), "#d84315");
+        const cover = coverInput || makeSvgCover(name, "#d84315", "#8e244d");
+
+        if (this.editingPageId) {
+          const page = this.state.pages.find(p => p.id === this.editingPageId);
+          if (page) {
+            page.name = name;
+            page.category = category;
+            page.description = description;
+            page.avatar = avatar;
+            page.cover = cover;
+            page.extraInfo = extraInfo;
+            page.isGamePage = isGamePage;
+          }
+          this.editingPageId = null;
+          this.toast("Page mise à jour !", "success");
+        } else {
+          const newPageId = "page_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
+          this.state.pages.push({
+            id: newPageId,
+            type: "page",
+            name,
+            category,
+            description,
+            avatar,
+            cover,
+            extraInfo,
+            isGamePage,
+            likes: [],
+            createdAt: Date.now()
+          });
+
+          if (isGamePage) {
+            const linkedGameId = "game_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
+            this.state.games.push({
+              id: linkedGameId,
+              name,
+              description: description || `Jeu officiel ${name}`,
+              image: cover,
+              icon: avatar,
+              url: "",
+              integrationType: "html",
+              htmlCode: `<!DOCTYPE html><html><body style="margin:0;background:#1b2838;color:#fff;font-family:Tahoma,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center;"><div><h2>🎮 ${this.escapeHtml(name)}</h2><p>Configurez le code HTML ou l'URL IFRAME de ce jeu dans <b>Paramètres &gt; Gestion des jeux Facebook</b>.</p></div></body></html>`,
+              iframeCode: "",
+              pageId: newPageId,
+              createdAt: Date.now()
+            });
+          }
+          this.toast("Page Facebook créée avec succès !", "success");
+        }
+        this.saveState();
+        this.renderAll();
+      },
+
+      deletePage(id) {
+        this.openConfirmModal(
+          "Supprimer cette page ?",
+          "La page ainsi que ses publications et liens GameRoom associés seront supprimés.",
+          () => {
+            this.state.pages = this.state.pages.filter(p => p.id !== id);
+            this.state.games = this.state.games.filter(g => g.pageId !== id);
+            this.saveState();
+            this.toast("Page supprimée.", "info");
+            this.renderAll();
+          }
+        );
+      },
+
+      renderSettingsGamesTab() {
+        const editing = this.state.games.find(g => g.id === this.editingGameId);
+        const intType = editing ? editing.integrationType : "html";
+
+        return `
+          <div class="space-y-4">
+            <div class="bg-[#f2f4f8] border border-[#d8dfea] p-3 rounded-[2px]">
+              <h3 class="font-bold text-[13px] text-[#3b5998] m-0 mb-2">
+                ${editing ? `Modifier le jeu : ${this.escapeHtml(editing.name)}` : "Ajouter un nouveau jeu personnalisé dans GameRoom"}
+              </h3>
+              <div class="space-y-2.5 text-[12px]">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Nom du jeu *</label>
+                    <input type="text" id="game_name" value="${editing ? this.escapeHtml(editing.name) : ""}" class="fb-input" placeholder="Ex: FarmVille Retro" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Icône de l'onglet</label>
+                    <input type="text" id="game_icon" value="${editing && !String(editing.icon || "").startsWith("data:image/") ? this.escapeHtml(editing.icon || "") : ""}" class="fb-input mb-1" placeholder="URL d'image (facultatif)" />
+                    <input type="file" id="game_icon_file" accept="image/*" class="fb-input" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block font-bold text-gray-700 mb-0.5">Description</label>
+                  <textarea id="game_description" rows="2" class="fb-textarea" placeholder="Description du jeu...">${editing ? this.escapeHtml(editing.description || "") : ""}</textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Image de présentation</label>
+                    <input type="text" id="game_image" value="${editing && !String(editing.image || "").startsWith("data:image/") ? this.escapeHtml(editing.image || "") : ""}" class="fb-input mb-1" placeholder="URL d'image (facultatif)" />
+                    <input type="file" id="game_image_file" accept="image/*" class="fb-input" />
+                  </div>
+                  <div>
+                    <label class="block font-bold text-gray-700 mb-0.5">Type d'intégration</label>
+                    <select id="game_integrationType" onchange="document.getElementById('box_int_html').classList.toggle('hidden', this.value!=='html'); document.getElementById('box_int_iframe').classList.toggle('hidden', this.value!=='iframe')" class="fb-select">
+                      <option value="html" ${intType === 'html' ? 'selected' : ''}>Option A : HTML (Code source HTML5)</option>
+                      <option value="iframe" ${intType === 'iframe' ? 'selected' : ''}>Option B : IFRAME (Lien ou balise iframe)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Option A : HTML -->
+                <div id="box_int_html" class="${intType === 'html' ? '' : 'hidden'}">
+                  <label class="block font-bold text-gray-700 mb-1">Code source HTML du jeu :</label>
+                  <textarea id="game_htmlCode" rows="5" class="fb-textarea font-mono text-[11px]" placeholder="<!DOCTYPE html>...">${editing ? this.escapeHtml(editing.htmlCode || "") : ""}</textarea>
+                </div>
+
+                <!-- Option B : IFRAME -->
+                <div id="box_int_iframe" class="${intType === 'iframe' ? '' : 'hidden'}">
+                  <label class="block font-bold text-gray-700 mb-1">Lien URL ou balise complète &lt;iframe&gt; :</label>
+                  <textarea id="game_iframeCode" rows="3" class="fb-textarea font-mono text-[11px]" placeholder="https://exemple.com/mon-jeu ou <iframe src='https://...'></iframe>">${editing ? this.escapeHtml(editing.iframeCode || "") : ""}</textarea>
+                  <div class="text-[10px] text-gray-500 mt-1">
+                    <i class="fas fa-magic text-[#3b5998] mr-1"></i>L'URL est extraite automatiquement avec autorisations WebGL et manette activées.
+                  </div>
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                  <button onclick="app.saveGame()" class="fb-btn-primary">${editing ? "Mettre à jour le jeu" : "Ajouter le jeu (Crée aussi une Page Facebook)"}</button>
+                  ${editing ? `<button onclick="app.editingGameId=null; app.renderAll()" class="fb-btn-secondary">Annuler</button>` : ""}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-[12px] text-gray-700 mb-2">Jeux installés dans GameRoom (${this.state.games.length})</h3>
+              <div class="space-y-2">
+                ${this.state.games.length === 0
+                  ? `<div class="text-[11px] text-gray-500 bg-gray-50 p-3 rounded border border-gray-200">Aucun jeu installé.</div>`
+                  : this.state.games.map(g => `
+                    <div class="flex items-center justify-between p-2.5 border border-gray-200 rounded-[2px] bg-white">
+                      <div class="flex items-center gap-2.5 min-w-0">
+                        <img src="${g.icon || FALLBACK_AVATAR}" onerror="this.src='${FALLBACK_AVATAR}'" class="w-11 h-11 rounded-[2px] object-cover cursor-pointer" onclick="app.launchGame('${g.id}')" />
+                        <div class="min-w-0">
+                          <div class="fb-link text-[12px] truncate" onclick="app.launchGame('${g.id}')">${this.escapeHtml(g.name)}</div>
+                          <div class="text-[10px] text-gray-500 truncate">${g.integrationType === 'html' ? 'HTML5 Sandbox' : 'IFRAME'} · ${this.escapeHtml(g.description)}</div>
+                        </div>
+                      </div>
+                      <div class="flex gap-1.5 shrink-0">
+                        <button onclick="app.launchGame('${g.id}')" class="fb-btn-green text-[10px] py-1">Jouer</button>
+                        <button onclick="app.editingGameId='${g.id}'; app.renderAll()" class="fb-btn-secondary text-[10px] py-1"><i class="fas fa-edit"></i></button>
+                        <button onclick="app.deleteGame('${g.id}')" class="fb-btn-danger text-[10px] py-1"><i class="fas fa-trash"></i></button>
+                      </div>
+                    </div>
+                  `).join("")
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      },
+
+      async saveGame() {
+        const name = (document.getElementById("game_name").value || "").trim();
+        const description = (document.getElementById("game_description").value || "").trim();
+        let iconInput, imageInput;
+        try {
+          const oldGame = this.editingGameId ? this.state.games.find(g => g.id === this.editingGameId) : null;
+          iconInput = await this.readImageChoice("game_icon_file", "game_icon", oldGame?.icon || "");
+          imageInput = await this.readImageChoice("game_image_file", "game_image", oldGame?.image || "");
+        } catch (err) { this.toast(err.message, "error"); return; }
+        const integrationType = document.getElementById("game_integrationType").value;
+        const htmlCode = document.getElementById("game_htmlCode") ? document.getElementById("game_htmlCode").value : "";
+        const iframeCode = document.getElementById("game_iframeCode") ? document.getElementById("game_iframeCode").value : "";
+
+        if (!name) {
+          this.toast("Le nom du jeu est obligatoire.", "error");
+          return;
+        }
+
+        const icon = iconInput || makeSvgAvatar("🎮", "#2e7d32");
+        const image = imageInput || makeSvgCover(name, "#2e7d32", "#1b5e20");
+
+        if (integrationType === "iframe") {
+          const norm = this.extractIframeUrl(iframeCode);
+          if (!this.isValidUrl(norm)) {
+            this.toast("L'URL ou le code iframe fourni n'est pas valide.", "error");
+            return;
+          }
+        }
+
+        if (this.editingGameId) {
+          const game = this.state.games.find(g => g.id === this.editingGameId);
+          if (game) {
+            game.name = name;
+            game.description = description;
+            game.icon = icon;
+            game.image = image;
+            game.integrationType = integrationType;
+            game.htmlCode = htmlCode;
+            game.iframeCode = iframeCode;
+          }
+          this.editingGameId = null;
+          this.toast("Jeu mis à jour avec succès !", "success");
+        } else {
+          const newGameId = "game_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
+          const newPageId = "page_" + Date.now() + "_" + Math.random().toString(36).slice(2, 5);
+
+          this.state.pages.push({
+            id: newPageId,
+            type: "page",
+            name,
+            category: "Jeux Facebook",
+            description: description || `Page officielle du jeu ${name}`,
+            avatar: icon,
+            cover: image,
+            extraInfo: "Jeu intégré GameRoom Фрайсбук",
+            isGamePage: true,
+            gameId: newGameId,
+            likes: [],
+            createdAt: Date.now()
+          });
+
+          this.state.games.push({
+            id: newGameId,
+            name,
+            description,
+            icon,
+            image,
+            integrationType,
+            htmlCode,
+            iframeCode,
+            pageId: newPageId,
+            createdAt: Date.now()
+          });
+
+          this.toast("Jeu ajouté avec succès et Page Facebook associée créée !", "success");
+        }
+        this.saveState();
+        this.renderAll();
+      },
+
+      deleteGame(id) {
+        this.openConfirmModal(
+          "Supprimer ce jeu ?",
+          "Le jeu sera retiré de la GameRoom et sa page Facebook associée sera supprimée.",
+          () => {
+            const game = this.state.games.find(g => g.id === id);
+            if (game && game.pageId) {
+              this.state.pages = this.state.pages.filter(p => p.id !== game.pageId);
+            }
+            this.state.games = this.state.games.filter(g => g.id !== id);
+            this.saveState();
+            this.toast("Jeu supprimé.", "info");
+            this.renderAll();
+          }
+        );
+      },
+
+      getInternalBackups() {
+        try {
+          const raw = localStorage.getItem(this.BACKUPS_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) return parsed;
+          }
+        } catch {}
+        return [];
+      },
+
+      renderSettingsBackupTab() {
+        const backups = this.getInternalBackups();
+        const lastDate = backups.length > 0
+          ? new Date(backups[0].createdAt).toLocaleString("fr-FR")
+          : "Aucune sauvegarde interne enregistrée";
+
+        const preview = this.pendingImportData;
+
+        return `
+          <div class="space-y-4">
+            <!-- Section A : Exporter & Créer une sauvegarde -->
+            <div class="bg-[#f2f4f8] border border-[#d8dfea] p-3 rounded-[2px]">
+              <h3 class="font-bold text-[13px] text-[#3b5998] m-0 mb-1">
+                <i class="fas fa-cloud-download-alt mr-1.5"></i>Sauvegarde, Exportation et Transfert
+              </h3>
+              <p class="text-[11px] text-gray-600 mb-3">
+                Exportez l'intégralité de votre réseau social Фрайсбук (personnages RP, amis, pages Facebook, publications, commentaires, jeux HTML/IFRAME et paramètres) dans un fichier JSON portable.
+              </p>
+
+              <div class="flex flex-wrap items-center gap-2 mb-2">
+                <button onclick="app.downloadBackupFile()" class="fb-btn-primary py-1.5 px-3">
+                  <i class="fas fa-download"></i> Télécharger ma sauvegarde (.json)
+                </button>
+                <button onclick="app.createInternalBackup()" class="fb-btn-secondary py-1.5 px-3">
+                  <i class="fas fa-save"></i> Créer une sauvegarde interne
+                </button>
+                <button onclick="app.resetAllData()" class="fb-btn-danger py-1.5 px-3 ml-auto">
+                  <i class="fas fa-exclamation-triangle"></i> Réinitialiser les données
+                </button>
+              </div>
+              <div class="text-[11px] text-gray-600">
+                <b>Dernière sauvegarde locale :</b> ${this.escapeHtml(lastDate)}
+              </div>
+            </div>
+
+            <!-- Section B : Importer une sauvegarde depuis un fichier JSON -->
+            <div class="bg-white border border-gray-300 p-3 rounded-[2px]">
+              <h3 class="font-bold text-[13px] text-[#3b5998] m-0 mb-1">
+                <i class="fas fa-file-upload mr-1.5"></i>Importer une sauvegarde depuis un ordinateur
+              </h3>
+              <p class="text-[11px] text-gray-600 mb-2">
+                Sélectionnez un fichier <code>.json</code> exporté depuis cette installation ou une autre installation de Фрайсбук.
+              </p>
+              <label class="fb-btn-secondary cursor-pointer">
+                <i class="fas fa-folder-open text-[#3b5998]"></i> Importer une sauvegarde
+                <input type="file" accept=".json,application/json" class="hidden" onchange="app.handleImportFileSelect(event)" />
+              </label>
+
+              ${preview ? `
+                <div class="mt-3 p-3 bg-[#fff9d7] border border-[#e2c822] rounded-[2px]">
+                  <div class="font-bold text-[12px] text-gray-900 mb-1">
+                    <i class="fas fa-check-circle text-green-700 mr-1"></i>Aperçu de la sauvegarde valide détectée :
+                  </div>
+                  <ul class="text-[11px] text-gray-800 list-disc pl-5 space-y-0.5 mb-2.5">
+                    <li><b>Application :</b> ${this.escapeHtml(preview.appName)} (Version ${this.escapeHtml(preview.schemaVersion || "1.0")})</li>
+                    <li><b>Date d'exportation :</b> ${new Date(preview.exportedAt).toLocaleString("fr-FR")}</li>
+                    <li><b>Compte principal :</b> ${this.escapeHtml(preview.data.mainUser.firstName + " " + preview.data.mainUser.lastName)}</li>
+                    <li><b>Contenu :</b> ${preview.data.characters?.length || 0} personnage(s) RP · ${preview.data.pages?.length || 0} page(s) · ${preview.data.games?.length || 0} jeu(x) · ${preview.data.posts?.length || 0} publication(s)</li>
+                  </ul>
+                  <div class="flex gap-2">
+                    <button onclick="app.confirmImportBackup()" class="fb-btn-green">
+                      <i class="fas fa-check"></i> Confirmer et restaurer cette sauvegarde
+                    </button>
+                    <button onclick="app.pendingImportData=null; app.renderAll()" class="fb-btn-secondary">Annuler</button>
+                  </div>
+                </div>
+              ` : ""}
+            </div>
+
+            <!-- Section D : Historique des sauvegardes multiples conservées -->
+            <div>
+              <h4 class="font-bold text-[12px] text-gray-700 mb-2">Sauvegardes conservées dans ce navigateur (${backups.length})</h4>
+              ${backups.length === 0
+                ? `<div class="text-[11px] text-gray-500 bg-gray-50 p-3 border border-gray-200 rounded-[2px]">Aucune sauvegarde interne enregistrée. Cliquez sur « Créer une sauvegarde » ci-dessus pour conserver plusieurs points de restauration.</div>`
+                : `<div class="space-y-2">
+                    ${backups.map(b => `
+                      <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 border border-gray-200 rounded-[2px] bg-white">
+                        <div>
+                          <div class="font-bold text-[11px] text-gray-800">
+                            <i class="fas fa-archive text-[#3b5998] mr-1"></i>Instantané du ${new Date(b.createdAt).toLocaleString("fr-FR")} (${b.sizeKB} Ko)
+                          </div>
+                          <div class="text-[10px] text-gray-500">
+                            ${b.summary.charactersCount} personnages · ${b.summary.pagesCount} pages · ${b.summary.gamesCount} jeux · ${b.summary.postsCount} publications
+                          </div>
+                        </div>
+                        <div class="flex gap-1.5">
+                          <button onclick="app.restoreInternalBackup('${b.id}')" class="fb-btn-primary text-[10px] py-1">Restaurer</button>
+                          <button onclick="app.deleteInternalBackup('${b.id}')" class="fb-btn-danger text-[10px] py-1">Supprimer</button>
+                        </div>
+                      </div>
+                    `).join("")}
+                  </div>`
+              }
+            </div>
+          </div>
+        `;
+      },
+
+      // ======================================================================
+      // VUE 7 : ADMINISTRATION DU RÉSEAU SOCIAL
+      // ======================================================================
+      renderAdminView() {
+        const totalComments = this.state.posts.reduce((acc, p) => acc + p.comments.length, 0);
+        return `
+          <div class="fb-card p-3 space-y-4">
+            <div class="border-b pb-2 flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h2 class="text-[15px] font-bold text-[#3b5998] m-0">
+                  <i class="fas fa-shield-alt text-red-700 mr-1.5"></i>Panneau d'Administration — ${this.escapeHtml(this.state.settings.siteName)}
+                </h2>
+                <div class="text-[11px] text-gray-500">Supervision globale des personnages RP, pages Facebook, jeux GameRoom et modération du mur.</div>
+              </div>
+              <button onclick="app.navigate('settings', 'backup')" class="fb-btn-primary">
+                <i class="fas fa-download"></i> Exporter JSON
+              </button>
+            </div>
+
+            <!-- Compteurs statistiques -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              <div class="bg-[#f2f4f8] border border-[#d8dfea] p-2.5 rounded-[2px] text-center">
+                <div class="text-[18px] font-bold text-[#3b5998]">${this.state.characters.length + 1}</div>
+                <div class="text-[10px] text-gray-600 uppercase font-bold">Profils & Personnages</div>
+              </div>
+              <div class="bg-[#f2f4f8] border border-[#d8dfea] p-2.5 rounded-[2px] text-center">
+                <div class="text-[18px] font-bold text-orange-700">${this.state.pages.length}</div>
+                <div class="text-[10px] text-gray-600 uppercase font-bold">Pages Facebook</div>
+              </div>
+              <div class="bg-[#f2f4f8] border border-[#d8dfea] p-2.5 rounded-[2px] text-center">
+                <div class="text-[18px] font-bold text-green-700">${this.state.games.length}</div>
+                <div class="text-[10px] text-gray-600 uppercase font-bold">Jeux GameRoom</div>
+              </div>
+              <div class="bg-[#f2f4f8] border border-[#d8dfea] p-2.5 rounded-[2px] text-center">
+                <div class="text-[18px] font-bold text-gray-800">${this.state.posts.length}</div>
+                <div class="text-[10px] text-gray-600 uppercase font-bold">Publications</div>
+              </div>
+              <div class="bg-[#f2f4f8] border border-[#d8dfea] p-2.5 rounded-[2px] text-center">
+                <div class="text-[18px] font-bold text-gray-800">${totalComments}</div>
+                <div class="text-[10px] text-gray-600 uppercase font-bold">Commentaires</div>
+              </div>
+              <div class="bg-[#f2f4f8] border border-[#d8dfea] p-2.5 rounded-[2px] text-center">
+                <div class="text-[18px] font-bold text-gray-800">${this.state.friendships.length}</div>
+                <div class="text-[10px] text-gray-600 uppercase font-bold">Liens d'amitié</div>
+              </div>
+            </div>
+
+            <!-- Accès rapides aux gestionnaires -->
+            <div class="flex flex-wrap gap-2">
+              <button onclick="app.navigate('settings', 'characters')" class="fb-btn-secondary"><i class="fas fa-user-plus"></i> Gérer les personnages</button>
+              <button onclick="app.navigate('settings', 'pages')" class="fb-btn-secondary"><i class="fas fa-flag"></i> Gérer les pages</button>
+              <button onclick="app.navigate('settings', 'games')" class="fb-btn-secondary"><i class="fas fa-gamepad"></i> Gérer les jeux</button>
+            </div>
+
+            <!-- Modération rapide des publications -->
+            <div>
+              <h3 class="font-bold text-[12px] text-gray-700 mb-2">Modération des publications récentes</h3>
+              <div class="divide-y divide-gray-200 border border-gray-200 rounded-[2px]">
+                ${this.state.posts.length === 0
+                  ? `<div class="p-3 text-center text-gray-500 text-[11px]">Aucune publication à modérer.</div>`
+                  : this.state.posts.map(p => {
+                      const auth = this.getEntityById(p.authorId);
+                      return `
+                        <div class="p-2 flex items-center justify-between gap-2 bg-white hover:bg-gray-50">
+                          <div class="min-w-0 flex-1">
+                            <span class="font-bold text-[11px] text-[#3b5998]">${auth ? this.escapeHtml(auth.displayName) : "Membre"} :</span>
+                            <span class="text-[11px] text-gray-700">${this.escapeHtml(p.content.slice(0, 90))}${p.content.length > 90 ? "..." : ""}</span>
+                          </div>
+                          <button onclick="app.deletePost('${p.id}')" class="fb-btn-danger text-[10px] py-0.5 px-2 shrink-0">Supprimer</button>
+                        </div>
+                      `;
+                    }).join("")
+                }
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    };
+
+    // Démarrage de l'application au chargement complet du DOM
+    window.addEventListener("DOMContentLoaded", () => {
+      app.init();
+    });
+  </script>
+</body>
+</html>
